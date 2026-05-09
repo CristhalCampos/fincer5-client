@@ -1,0 +1,90 @@
+<nav class="flex justify-between items-center py-4 px-[5%] shadow-lg transition-colors duration-300 bg-(--surface-color)">
+  <!-- Logo -->
+  <div class="flex items-center gap-2 group cursor-pointer">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 500 500"
+      class="w-10 h-10 logo-svg transition-transform duration-300 group-hover:scale-105"
+      style="fill: var(--accent-color);"
+    >
+      <path d="M65.5 68.9C59.8 70.4 58 71.2 58.6 72.1C58.9 72.6 58.5 73.3 57.7 73.6C53.3 75.3 53.1 81.5 52.8 262.5C52.5 404.5 52.5 405.5 54.5 409C55.7 410.9 58 413.2 59.7 414.2C62.6 415.9 71.3 416 241.9 416.1H421L427.2 413.8C435.6 410.8 444.7 401.9 448.1 393.4L450.5 387.5V274.5C450.5 212.3 450.4 146.3 450.2 127.8L449.9 94.1L446.9 88.1C442.9 80.1 436.8 74.9 427.7 71.5C422.1 69.5 419 69 414.2 69.2L407.9 69.5L404.3 78C399.9 88.5 399.3 91 401.1 91.1C401.9 91.2 405.5 91.2 409.2 91.2C417.4 91.1 421.7 92.7 425.9 97.5L429 101.1V240.1C429 376.9 429 379.1 427 383C425.1 386.7 420.4 391 416.8 392.3C414.7 393.1 297.1 393.4 296.4 392.7C296.1 392.4 300.4 389.8 305.9 387C311.4 384.2 317.6 380.7 319.5 379.4C321.5 378.1 323.5 377 324 377C324.6 377 325 376.6 325 376.2C325 375.8 326.5 374.6 328.3 373.5C330 372.5 331.7 371.4 332 371.1C332.3 370.7 335.9 367.9 340 364.8C348.9 358 366.7 340.3 374.5 330.5C393.8 306.2 405 282.7 409.6 257C411.1 248.6 410.7 226.4 408.9 219C408.4 216.5 407.6 213.3 407.3 211.7C407 210.2 406.4 208.7 405.9 208.4C405.4 208.1 405 207.1 405 206.2C405 205.3 403 200.5 400.5 195.5C395.5 185.4 387.2 175 377.3 166.5L370.7 160.8L287.1 161.2C204.9 161.5 203.4 161.5 200 163.6C198.1 164.7 195.4 167.6 194.1 170C191.7 174.2 191.6 175.3 191.6 192.5L191.5 210.5L247.3 210.8C284.6 210.9 303 211.4 303 212C303 213 293.4 231.9 288.5 240.5L286.2 244.5L239.4 244.8C213.7 244.9 192.3 245.3 191.9 245.6C191.4 245.9 191 263.7 191.1 285.3C191.1 306.9 191.1 335 191 347.7V371H169H147V308.2V245.3L135.8 244.7C129.6 244.3 118.5 244 111.3 244C104 244 98 243.8 98 243.5C98 243.2 99.2 241.1 100.6 238.8C102 236.5 104.3 232.7 105.6 230.2C106.9 227.7 109.9 222.4 112.3 218.4L116.5 211.1L131.5 210.8L146.5 210.5L147 188.5C147.5 167.1 147.6 166.3 150.4 159.5C158.8 139.2 173.9 126.5 195.7 121.4C201.7 120 212 119.9 281 120.1C364.6 120.5 363.5 120.5 370.5 115.6C375.7 112.1 378.8 108.1 382.4 100.7C391.6 81.4 396 71.6 396 70.4C396 69.2 386.8 69 339.3 69C308 69 234.4 68.8 175.5 68.5C116.7 68.3 67.2 68.5 65.5 68.9Z"/>
+    </svg>
+    <div class="rubik-title text-2xl font-bold tracking-tight" style="color: var(--text-color);">
+      fincer<span class="logo-text-accent" style="color: var(--accent-color);">5</span>
+    </div>
+  </div>
+
+  <!-- Links de navegación -->
+  <div class="flex gap-4 items-center">
+    @let linkStyles = "px-2 py-1 text-(--text-color) font-medium transition-all hover:opacity-80";
+    @let activeStyles = "text-(--accent-color) border-b-2 border-(--accent-color)";
+
+    <a routerLink="/home"
+        routerLinkActive
+        #rlaHome="routerLinkActive"
+        [class]="linkStyles"
+        [class.active-link]="rlaHome.isActive"
+        [ngClass]="rlaHome.isActive ? activeStyles : ''">Inicio</a>
+
+    <a routerLink="/about"
+        routerLinkActive
+        #rlaAbout="routerLinkActive"
+        [class]="linkStyles"
+        [ngClass]="rlaAbout.isActive ? activeStyles : ''">Nosotros</a>
+
+    <a routerLink="/faq"
+        routerLinkActive
+        #rlaFaq="routerLinkActive"
+        [class]="linkStyles"
+        [ngClass]="rlaFaq.isActive ? activeStyles : ''">FAQ</a>
+
+    <a routerLink="/contact"
+        routerLinkActive
+        #rlaContact="routerLinkActive"
+        [class]="linkStyles"
+        [ngClass]="rlaContact.isActive ? activeStyles : ''">Contacto</a>
+  </div>
+
+  <!-- Acciones -->
+  <div class="flex items-center gap-6">
+    <!-- Switch de Tema Deslizante -->
+    <div class="relative inline-flex items-center cursor-pointer group" (click)="theme.toggleTheme()">
+      <!-- Fondo del track -->
+      <div
+        class="w-14 h-7 rounded-full transition-all duration-300 shadow-inner border"
+        style="background-color: var(--switch-bg); border-color: var(--switch-border);">
+        <!-- Iconos de fondo -->
+        <div class="absolute inset-0 flex justify-between items-center px-2.5 pointer-events-none">
+          <lucide-icon [img]="MoonIcon" class="w-3 h-3 text-slate-400/50 dark:text-neutral-500/30"></lucide-icon>
+          <lucide-icon [img]="SunIcon" class="w-3 h-3 text-slate-400/30 dark:text-neutral-500/50"></lucide-icon>
+        </div>
+      </div>
+
+      <!-- Círculo deslizante (Thumb) -->
+      <div
+        class="absolute left-1 top-1 w-5 h-5 rounded-full transition-all duration-300 flex items-center justify-center shadow-lg"
+        [style.background-color]="'var(--switch-thumb)'"
+        [class.translate-x-7]="theme.darkMode()">
+        <!-- Contenedor interno para asegurar el centrado perfecto del SVG -->
+        <div class="flex items-center justify-center w-full h-full">
+          @if (theme.darkMode()) {
+            <lucide-icon
+              [img]="SunIcon"
+              class="w-3.5 h-3.5 text-yellow-400 transition-transform scale-110">
+            </lucide-icon>
+          } @else {
+            <lucide-icon
+              [img]="MoonIcon"
+              class="w-3.5 h-3.5 text-slate-600 transition-transform scale-110">
+            </lucide-icon>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Botón de Autenticación -->
+    <button class="btn-primary">
+      Comenzar
+    </button>
+  </div>
+</nav>
