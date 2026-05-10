@@ -13,6 +13,7 @@
   --switch-bg: #e2e8f0;
   --switch-border: #cbd5e1;
   --switch-thumb: #ffffff;
+  --brand-fincer: #525252;
 }
 
 [data-theme="dark"] {
@@ -25,6 +26,7 @@
   --switch-bg: #404040;
   --switch-border: #525252;
   --switch-thumb: #333333;
+  --brand-fincer: #949699;
 }
 
 body {
@@ -52,7 +54,7 @@ body {
   color: var(--accent-contrast);
   padding: 0.5rem 1.25rem;
   border-radius: 0.8rem;
-  font-weight: 700;
+  font-weight: 500;
   font-size: 0.875rem;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
