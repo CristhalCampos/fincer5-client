@@ -1,11 +1,197 @@
-<section class="flex flex-col items-center justify-center min-h-[80vh] text-center px-6">
-  <h1 class="rubik-title text-5xl md:text-5xl font-bold mb-6 text-(--text-color)">
-    Controla tus finanzas con <span class="text-(--brand-fincer)">fincer</span><span class="text-(--accent-color)">5</span>
-  </h1>
-  <p class="max-w-2xl text-lg mb-8 opacity-80">
-    La plataforma multimoneda diseñada para freelancers que buscan simplicidad y potencia en su gestión diaria.
+<!-- ========================================== -->
+<!-- 1. HERO SECTION                            -->
+<!-- ========================================== -->
+<section class="flex flex-col items-center justify-center min-h-[85vh] text-center px-6 py-20">
+  <p class="text-(--accent-color) font-semibold mb-4 tracking-wide uppercase text-sm">
+    Gestión financiera diseñada para la realidad venezolana
   </p>
-  <button routerLink="/contact" class="btn-primary text-xl px-8 py-4">
-    Empezar ahora
-  </button>
+  
+  <h1 class="rubik-title text-4xl md:text-6xl font-bold mb-6 text-(--text-color) leading-tight max-w-4xl">
+    Tu dinero en Bolívares pierde valor cada día. <br class="hidden md:block">
+    <span class="text-(--accent-color)">fincer5</span> te dice cómo protegerlo.
+  </h1>
+  
+  <p class="max-w-2xl text-lg md:text-xl mb-8 opacity-80 text-(--text-color)">
+    Deja de calcular "a ojo" tu patrimonio. Indexamos tus saldos a la tasa del día, separamos tus finanzas personales de las de tu negocio, y te decimos si realmente puedes asumir esa nueva cuota.
+  </p>
+  
+  <div class="flex flex-col sm:flex-row gap-4">
+    <button routerLink="/register" class="btn-primary text-lg px-8 py-4">
+      Proteger mi dinero Gratis
+    </button>
+    <a href="#como-funciona" class="text-(--text-color) opacity-80 hover:opacity-100 font-medium text-lg px-8 py-4 border border-(--switch-border) rounded-[0.8rem] transition-all hover:border-(--accent-color)">
+      Ver cómo funciona
+    </a>
+  </div>
+  
+  <p class="mt-8 text-sm opacity-60 text-(--text-color)">
+    ✓ Sin tarjeta de crédito &nbsp;&nbsp;|&nbsp;&nbsp; ✓ 100% adaptado al sistema local
+  </p>
+</section>
+
+
+<!-- ========================================== -->
+<!-- 2. PROBLEM SECTION (Agitation)             -->
+<!-- ========================================== -->
+<section class="py-20 px-6 bg-(--surface-color)">
+  <div class="max-w-6xl mx-auto">
+    <h2 class="rubik-title text-3xl md:text-4xl font-bold text-center mb-4 text-(--text-color)">
+      Las apps de afuera no entienden lo que es vivir aquí. <br class="hidden md:block"><span class="text-(--accent-color)">Nosotros sí.</span>
+    </h2>
+    <p class="text-center opacity-80 mb-12 max-w-2xl mx-auto text-(--text-color)">
+      Sabemos que el dinero es tu mayor preocupación diaria. Por eso atacamos los 3 grandes problemas que te hacen perder dinero en silencio:
+    </p>
+    
+    <div class="grid md:grid-cols-3 gap-8">
+      <!-- Card 1 -->
+      <div class="p-8 rounded-2xl border border-(--switch-border) bg-(--bg-color) hover:border-(--accent-color) transition-all group">
+        <div class="w-12 h-12 rounded-xl bg-(--accent-color)/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+          <lucide-icon [img]="TrendingDownIcon" class="text-(--accent-color) w-6 h-6"></lucide-icon>
+        </div>
+        <h3 class="rubik-title text-xl font-bold mb-3 text-(--text-color)">La fuga silenciosa por devaluación</h3>
+        <p class="opacity-80 text-(--text-color) leading-relaxed">
+          Tienes saldos en Bolívares que pierden valor cada hora. No sabes cuánto estás perdiendo hasta que vas a cambiar. fincer5 te alerta antes de que sea tarde.
+        </p>
+      </div>
+      
+      <!-- Card 2 -->
+      <div class="p-8 rounded-2xl border border-(--switch-border) bg-(--bg-color) hover:border-(--accent-color) transition-all group">
+        <div class="w-12 h-12 rounded-xl bg-(--accent-color)/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+          <lucide-icon [img]="StoreIcon" class="text-(--accent-color) w-6 h-6"></lucide-icon>
+        </div>
+        <h3 class="rubik-title text-xl font-bold mb-3 text-(--text-color)">La ceguera del emprendedor</h3>
+        <p class="opacity-80 text-(--text-color) leading-relaxed">
+          Mezclas el dinero de la publicidad con la compra del mercado. Crees que tu negocio es rentable, pero tu cuenta personal está en cero.
+        </p>
+      </div>
+      
+      <!-- Card 3 -->
+      <div class="p-8 rounded-2xl border border-(--switch-border) bg-(--bg-color) hover:border-(--accent-color) transition-all group">
+        <div class="w-12 h-12 rounded-xl bg-(--accent-color)/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+          <lucide-icon [img]="AlertTriangleIcon" class="text-(--accent-color) w-6 h-6"></lucide-icon>
+        </div>
+        <h3 class="rubik-title text-xl font-bold mb-3 text-(--text-color)">La trampa de las microcuotas</h3>
+        <p class="opacity-80 text-(--text-color) leading-relaxed">
+          Cashea, Krece, Multimax... Las compras a plazos se acumulan y tu flujo de caja quincenal colapsa sin que te des cuenta.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========================================== -->
+<!-- 3. SOLUTION SECTION (Features)             -->
+<!-- ========================================== -->
+<section id="como-funciona" class="py-20 px-6">
+  <div class="max-w-6xl mx-auto">
+    <h2 class="rubik-title text-3xl md:text-4xl font-bold text-center mb-16 text-(--text-color)">
+      Toma el control. Convierte el caos en <span class="text-(--accent-color)">claridad absoluta</span>.
+    </h2>
+    
+    <div class="space-y-10">
+      <!-- Block 1 -->
+      <div class="flex flex-col md:flex-row items-center gap-8 bg-(--surface-color) p-8 md:p-10 rounded-2xl border border-(--switch-border)">
+        <div class="w-16 h-16 rounded-2xl bg-(--accent-color)/10 flex items-center justify-center shrink-0">
+          <lucide-icon [img]="ShieldIcon" class="text-(--accent-color) w-8 h-8"></lucide-icon>
+        </div>
+        <div>
+          <h3 class="rubik-title text-2xl font-bold mb-3 text-(--text-color)">Indexación de Patrimonio en Tiempo Real</h3>
+          <p class="opacity-80 mb-3 text-(--text-color) leading-relaxed">
+            Cada transacción en Bolívares se "congela" a la tasa del día. Abre fincer5 y mira tu patrimonio real en Dólares al instante.
+          </p>
+          <p class="font-semibold text-(--accent-color)">
+            ➤ Beneficio: Recibe alertas cuando tengas exceso de liquidez en Bs para comprar divisas a tiempo.
+          </p>
+        </div>
+      </div>
+      
+      <!-- Block 2 -->
+      <div class="flex flex-col md:flex-row-reverse items-center gap-8 bg-(--surface-color) p-8 md:p-10 rounded-2xl border border-(--switch-border)">
+        <div class="w-16 h-16 rounded-2xl bg-(--accent-color)/10 flex items-center justify-center shrink-0">
+          <lucide-icon [img]="RefreshCwIcon" class="text-(--accent-color) w-8 h-8"></lucide-icon>
+        </div>
+        <div>
+          <h3 class="rubik-title text-2xl font-bold mb-3 text-(--text-color)">El "Switch" Personal / Negocio</h3>
+          <p class="opacity-80 mb-3 text-(--text-color) leading-relaxed">
+            Un interruptor limpio que separa de raíz tus finanzas. Genera flujos de caja independientes y calcula tu costo de reposición inflacionario.
+          </p>
+          <p class="font-semibold text-(--accent-color)">
+            ➤ Beneficio: Nunca más venderás a pérdida por no calcular la inflación de reposición.
+          </p>
+        </div>
+      </div>
+      
+      <!-- Block 3 -->
+      <div class="flex flex-col md:flex-row items-center gap-8 bg-(--surface-color) p-8 md:p-10 rounded-2xl border border-(--switch-border)">
+        <div class="w-16 h-16 rounded-2xl bg-(--accent-color)/10 flex items-center justify-center shrink-0">
+          <lucide-icon [img]="ActivityIcon" class="text-(--accent-color) w-8 h-8"></lucide-icon>
+        </div>
+        <div>
+          <h3 class="rubik-title text-2xl font-bold mb-3 text-(--text-color)">Radar de Capacidad de Endeudamiento</h3>
+          <p class="opacity-80 mb-3 text-(--text-color) leading-relaxed">
+            ¿Quieres comprar a plazos? Nuestro módulo centraliza todas tus cuotas y calcula su impacto real en tu flujo de caja.
+          </p>
+          <p class="font-semibold text-(--accent-color)">
+            ➤ Beneficio: Te dirá con frialdad matemática si puedes pagarlo o si estás a punto de ahogar tu presupuesto.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========================================== -->
+<!-- 4. PRICING & FINAL CTA SECTION             -->
+<!-- ========================================== -->
+<section class="py-20 px-6 bg-(--surface-color)">
+  <div class="max-w-5xl mx-auto text-center">
+    <h2 class="rubik-title text-3xl md:text-4xl font-bold mb-6 text-(--text-color)">
+      Empieza gratis. Ahórrate el 15% de tus ingresos desde el día uno.
+    </h2>
+    <p class="text-lg opacity-80 mb-12 max-w-2xl mx-auto text-(--text-color)">
+      Nuestra versión <strong>Gratuita</strong> incluye todo lo que necesitas para ordenar tu caos y ver tu patrimonio en USD. 
+      ¿Quieres automatizar la lectura de Pago Móvil y evaluar créditos en segundos?
+    </p>
+    
+    <div class="flex flex-col md:flex-row gap-8 justify-center items-stretch mb-12">
+      <!-- Free Plan -->
+      <div class="p-8 rounded-2xl border-2 border-(--switch-border) bg-(--bg-color) w-full max-w-sm text-left flex flex-col">
+        <h3 class="rubik-title text-2xl font-bold mb-2 text-(--text-color)">Plan Free</h3>
+        <p class="text-4xl font-bold text-(--text-color) mb-6">$0 <span class="text-sm opacity-60 font-normal">/ siempre</span></p>
+        <ul class="space-y-3 text-sm opacity-80 text-(--text-color) mb-8 grow">
+          <li class="flex items-start gap-2">✓ <span>Registro manual de movimientos</span></li>
+          <li class="flex items-start gap-2">✓ <span>Tasa BCV automática diaria</span></li>
+          <li class="flex items-start gap-2">✓ <span>Switch Personal / Negocio</span></li>
+          <li class="flex items-start gap-2">✓ <span>Planes de ahorro visuales</span></li>
+        </ul>
+        <button routerLink="/register" class="w-full py-3 px-6 rounded-[0.8rem] border border-(--switch-border) text-(--text-color) font-medium hover:border-(--accent-color) hover:text-(--accent-color) transition-all">
+          Empezar Gratis
+        </button>
+      </div>
+      
+      <!-- Premium Plan -->
+      <div class="p-8 rounded-2xl border-2 border-(--accent-color) bg-(--bg-color) w-full max-w-sm text-left flex flex-col relative shadow-xl">
+        <span class="absolute -top-4 left-1/2 -translate-x-1/2 bg-(--accent-color) text-(--accent-contrast) text-xs font-bold px-4 py-1.5 rounded-full shadow-md">
+          MÁS POPULAR
+        </span>
+        <h3 class="rubik-title text-2xl font-bold mb-2 text-(--text-color)">Plan Premium</h3>
+        <p class="text-4xl font-bold text-(--accent-color) mb-6">Pro <span class="text-sm opacity-60 font-normal text-(--text-color)">/ mes</span></p>
+        <ul class="space-y-3 text-sm opacity-90 text-(--text-color) mb-8 grow">
+          <li class="flex items-start gap-2">✓ <span><strong>Lectura de capturas (OCR)</strong></span></li>
+          <li class="flex items-start gap-2">✓ <span><strong>Costo de reposición inflacionario</strong></span></li>
+          <li class="flex items-start gap-2">✓ <span><strong>Evaluador Cashea / Krece</strong></span></li>
+          <li class="flex items-start gap-2">✓ <span>Alertas de devaluación proactivas</span></li>
+        </ul>
+        <button routerLink="/register" class="btn-primary w-full py-3 px-6 text-base">
+          Desbloquear Premium
+        </button>
+      </div>
+    </div>
+    
+    <p class="text-sm opacity-60 text-(--text-color)">
+      ¿Tienes dudas? <a routerLink="/contact" class="text-(--accent-color) font-semibold hover:underline">Contáctanos aquí</a>
+    </p>
+  </div>
 </section>

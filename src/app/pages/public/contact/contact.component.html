@@ -1,10 +1,127 @@
-<div class="max-w-xl mx-auto py-16 px-6">
-  <div class="bg-(--surface-color) p-10 rounded-3xl shadow-2xl border border-(--switch-border)">
-    <h2 class="text-2xl font-bold mb-6 text-center">Contáctanos</h2>
-    <form class="space-y-4">
-      <input type="text" placeholder="Nombre" class="w-full p-3 rounded-lg bg-(--bg-color) border border-(--switch-border) focus:border-(--accent-color) outline-none transition-all">
-      <textarea placeholder="Mensaje" rows="4" class="w-full p-3 rounded-lg bg-(--bg-color) border border-(--switch-border) focus:border-(--accent-color) outline-none transition-all"></textarea>
-      <button class="btn-primary w-full py-3 mt-4">Enviar Mensaje</button>
-    </form>
+<!-- ========================================== -->
+<!-- CONTACT PAGE                               -->
+<!-- ========================================== -->
+<div class="max-w-6xl mx-auto py-16 px-6">
+  
+  <!-- Header -->
+  <div class="text-center mb-12">
+    <h1 class="rubik-title text-4xl md:text-5xl font-bold mb-4 text-(--text-color)">
+      Hablemos. <span class="text-(--accent-color)">Estamos aquí para ayudarte.</span>
+    </h1>
+    <p class="text-lg opacity-80 max-w-2xl mx-auto text-(--text-color)">
+      ¿Tienes dudas sobre cómo funciona fincer5? ¿Encontraste un error o tienes una sugerencia para mejorar la app? Nuestro equipo está listo para escucharte.
+    </p>
   </div>
+
+  <!-- Grid 2 columnas -->
+  <div class="grid md:grid-cols-2 gap-12 items-start">
+    
+    <!-- Columna Izquierda: Formulario -->
+    <div class="bg-(--surface-color) p-10 rounded-3xl shadow-2xl border border-(--switch-border)">
+      <h2 class="text-2xl font-bold mb-6 text-(--text-color)">Envíanos un mensaje</h2>
+      
+      <form class="space-y-4">
+        <!-- Nombre -->
+        <div>
+          <label class="block text-sm font-medium mb-2 text-(--text-color)">Nombre completo</label>
+          <input 
+            type="text" 
+            placeholder="Tu nombre" 
+            class="w-full p-3 rounded-lg bg-(--bg-color) border border-(--switch-border) focus:border-(--accent-color) outline-none transition-all text-(--text-color) placeholder:opacity-50"
+          >
+        </div>
+
+        <!-- Email -->
+        <div>
+          <label class="block text-sm font-medium mb-2 text-(--text-color)">Correo electrónico</label>
+          <input 
+            type="email" 
+            placeholder="tu@email.com" 
+            class="w-full p-3 rounded-lg bg-(--bg-color) border border-(--switch-border) focus:border-(--accent-color) outline-none transition-all text-(--text-color) placeholder:opacity-50"
+          >
+        </div>
+
+        <!-- Motivo -->
+        <div>
+          <label class="block text-sm font-medium mb-2 text-(--text-color)">Motivo de contacto</label>
+          <select 
+            class="w-full p-3 rounded-lg bg-(--bg-color) border border-(--switch-border) focus:border-(--accent-color) outline-none transition-all text-(--text-color)"
+          >
+            <option value="">Selecciona una opción</option>
+            <option value="soporte">Soporte técnico</option>
+            <option value="planes">Dudas sobre planes</option>
+            <option value="sugerencias">Sugerencias</option>
+            <option value="alianzas">Alianzas comerciales</option>
+            <option value="otro">Otro</option>
+          </select>
+        </div>
+
+        <!-- Mensaje -->
+        <div>
+          <label class="block text-sm font-medium mb-2 text-(--text-color)">Tu mensaje</label>
+          <textarea 
+            placeholder="Cuéntanos en qué podemos ayudarte..." 
+            rows="5" 
+            class="w-full p-3 rounded-lg bg-(--bg-color) border border-(--switch-border) focus:border-(--accent-color) outline-none transition-all text-(--text-color) placeholder:opacity-50 resize-none"
+          ></textarea>
+        </div>
+
+        <!-- Botón -->
+        <button type="submit" class="btn-primary w-full py-3 mt-4 text-base">
+          Enviar mensaje
+        </button>
+
+        <!-- Microcopy -->
+        <p class="text-xs opacity-60 text-center mt-4 text-(--text-color)">
+          Respondemos en menos de 24 horas hábiles
+        </p>
+      </form>
+    </div>
+
+    <!-- Columna Derecha: Información -->
+    <div class="space-y-8">
+      
+      <!-- Email directo -->
+      <div class="flex items-start gap-4">
+        <div class="w-12 h-12 rounded-xl bg-(--accent-color) flex items-center justify-center shrink-0">
+          <lucide-icon [img]="MailIcon" class="text-(--accent-contrast) w-6 h-6"></lucide-icon>
+        </div>
+        <div>
+          <h3 class="font-bold text-lg mb-1 text-(--text-color)">Escríbenos directamente</h3>
+          <a href="mailto:info@f.com" class="text-(--accent-color) hover:underline font-medium">
+            info@f.com
+          </a>
+          <p class="text-sm opacity-70 mt-1 text-(--text-color)">
+            Para consultas rápidas o problemas urgentes
+          </p>
+        </div>
+      </div>
+
+      <!-- Tiempo de respuesta -->
+      <div class="flex items-start gap-4">
+        <div class="w-12 h-12 rounded-xl bg-(--accent-color) flex items-center justify-center shrink-0">
+          <lucide-icon [img]="ClockIcon" class="text-(--accent-contrast) w-6 h-6"></lucide-icon>
+        </div>
+        <div>
+          <h3 class="font-bold text-lg mb-1 text-(--text-color)">Tiempo de respuesta</h3>
+          <p class="opacity-80 text-(--text-color)">
+            Nos comprometemos a responder todas las consultas en menos de 24 horas hábiles.
+          </p>
+        </div>
+      </div>
+
+      <!-- Mensaje de marca -->
+      <div class="bg-(--surface-color) p-8 rounded-2xl border border-(--switch-border) mt-8">
+        <div class="flex items-center gap-3 mb-4">
+          <lucide-icon [img]="MapPinIcon" class="text-(--accent-color) w-5 h-5"></lucide-icon>
+          <h3 class="font-bold text-lg text-(--text-color)">Hecho en Venezuela</h3>
+        </div>
+        <p class="opacity-80 text-(--text-color) leading-relaxed">
+          Diseñado y desarrollado con orgullo para entender y resolver los retos financieros de nuestra gente. Cada funcionalidad fue pensada desde la realidad del empleado que cobra en bolívares y del comerciante que necesita saber su costo de reposición real.
+        </p>
+      </div>
+
+    </div>
+  </div>
+
 </div>

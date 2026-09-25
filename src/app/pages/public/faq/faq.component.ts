@@ -1,5 +1,12 @@
 import { Component } from '@angular/core';
-import { LucideAngularModule, HandHelpingIcon } from 'lucide-angular';
+import {
+  LucideAngularModule,
+  HandHelpingIcon,
+  ShieldIcon,
+  CreditCardIcon,
+  ChartBarIcon,
+  ChevronDownIcon
+} from 'lucide-angular';
 
 @Component({
   selector: 'app-faq',
@@ -9,4 +16,8 @@ import { LucideAngularModule, HandHelpingIcon } from 'lucide-angular';
 })
 export class FaqComponent {
   readonly HelpIcon = HandHelpingIcon;
+  readonly ShieldIcon = ShieldIcon;
+  readonly CreditCardIcon = CreditCardIcon;
+  readonly ChartBarIcon = ChartBarIcon;
+  readonly ChevronDownIcon = ChevronDownIcon;
 }

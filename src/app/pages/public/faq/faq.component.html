@@ -1,12 +1,223 @@
+<!-- ========================================== -->
+<!-- FAQ PAGE                                   -->
+<!-- ========================================== -->
 <div class="max-w-3xl mx-auto py-12 px-6">
+  
+  <!-- Header -->
   <div class="flex items-center gap-3 mb-10">
-    <lucide-icon [img]="HelpIcon" class="text-(--accent-color)"></lucide-icon>
-    <h2 class="text-3xl font-bold">Preguntas Frecuentes</h2>
+    <lucide-icon [img]="HelpIcon" class="text-(--accent-color) w-8 h-8"></lucide-icon>
+    <h2 class="rubik-title text-3xl md:text-4xl font-bold text-(--text-color)">Preguntas Frecuentes</h2>
   </div>
-  <div class="space-y-6">
-    <div class="p-6 bg-(--surface-color) rounded-xl border border-(--switch-border)">
-      <h3 class="font-bold mb-2">¿Cómo maneja las múltiples monedas?</h3>
-      <p class="opacity-80">Fincer5 utiliza tasas de cambio en tiempo real para que siempre sepas cuánto dinero tienes, sin importar la divisa.</p>
+  
+  <p class="text-lg opacity-80 mb-12 text-(--text-color)">
+    Todo lo que necesitas saber sobre fincer5 antes de tomar el control de tus finanzas.
+  </p>
+
+
+  <!-- ========================================== -->
+  <!-- SECCIÓN 1: SEGURIDAD Y PRIVACIDAD          -->
+  <!-- ========================================== -->
+  <div class="mb-12">
+    <div class="flex items-center gap-2 mb-6">
+      <lucide-icon [img]="ShieldIcon" class="text-(--accent-color) w-5 h-5"></lucide-icon>
+      <h3 class="rubik-title text-xl font-bold text-(--text-color)">Seguridad y Privacidad</h3>
+    </div>
+    
+    <div class="space-y-4">
+      
+      <!-- Pregunta 1 -->
+      <details class="group bg-(--surface-color) rounded-xl border border-(--switch-border) overflow-hidden">
+        <summary class="flex items-center justify-between p-6 cursor-pointer hover:bg-(--bg-color) transition-colors">
+          <h4 class="font-bold text-(--text-color) pr-4">¿fincer5 tiene acceso a mis cuentas bancarias o puede mover mi dinero?</h4>
+          <lucide-icon [img]="ChevronDownIcon" class="text-(--accent-color) w-5 h-5 shrink-0 group-open:rotate-180 transition-transform"></lucide-icon>
+        </summary>
+        <div class="px-6 pb-6 pt-0">
+          <p class="opacity-80 text-(--text-color) leading-relaxed">
+            No. fincer5 es una herramienta de gestión y análisis. No nos conectamos a tus bancos ni tenemos permiso para mover tu dinero. Tú registras tus movimientos (o subes tus capturas) y nosotros te ayudamos a entenderlos y proyectarlos. Tu dinero sigue 100% en tus cuentas.
+          </p>
+        </div>
+      </details>
+
+      <!-- Pregunta 2 -->
+      <details class="group bg-(--surface-color) rounded-xl border border-(--switch-border) overflow-hidden">
+        <summary class="flex items-center justify-between p-6 cursor-pointer hover:bg-(--bg-color) transition-colors">
+          <h4 class="font-bold text-(--text-color) pr-4">¿Mis datos están seguros?</h4>
+          <lucide-icon [img]="ChevronDownIcon" class="text-(--accent-color) w-5 h-5 shrink-0 group-open:rotate-180 transition-transform"></lucide-icon>
+        </summary>
+        <div class="px-6 pb-6 pt-0">
+          <p class="opacity-80 text-(--text-color) leading-relaxed">
+            Absolutamente. Utilizamos encriptación de grado bancario para proteger tu información. Tus datos financieros nunca se comparten con terceros. Además, como no tenemos acceso a tus cuentas, no hay riesgo de que alguien más pueda ver tus saldos reales.
+          </p>
+        </div>
+      </details>
+
+      <!-- Pregunta 3 -->
+      <details class="group bg-(--surface-color) rounded-xl border border-(--switch-border) overflow-hidden">
+        <summary class="flex items-center justify-between p-6 cursor-pointer hover:bg-(--bg-color) transition-colors">
+          <h4 class="font-bold text-(--text-color) pr-4">¿Puedo eliminar mi cuenta y todos mis datos en cualquier momento?</h4>
+          <lucide-icon [img]="ChevronDownIcon" class="text-(--accent-color) w-5 h-5 shrink-0 group-open:rotate-180 transition-transform"></lucide-icon>
+        </summary>
+        <div class="px-6 pb-6 pt-0">
+          <p class="opacity-80 text-(--text-color) leading-relaxed">
+            Sí. Tienes control total sobre tu información. Puedes eliminar tu cuenta desde la configuración de tu perfil y todos tus datos serán borrados permanentemente de nuestros servidores en menos de 24 horas.
+          </p>
+        </div>
+      </details>
+
     </div>
   </div>
+
+
+  <!-- ========================================== -->
+  <!-- SECCIÓN 2: PLANES Y FUNCIONALIDADES        -->
+  <!-- ========================================== -->
+  <div class="mb-12">
+    <div class="flex items-center gap-2 mb-6">
+      <lucide-icon [img]="CreditCardIcon" class="text-(--accent-color) w-5 h-5"></lucide-icon>
+      <h3 class="rubik-title text-xl font-bold text-(--text-color)">Planes y Funcionalidades</h3>
+    </div>
+    
+    <div class="space-y-4">
+      
+      <!-- Pregunta 1 -->
+      <details class="group bg-(--surface-color) rounded-xl border border-(--switch-border) overflow-hidden">
+        <summary class="flex items-center justify-between p-6 cursor-pointer hover:bg-(--bg-color) transition-colors">
+          <h4 class="font-bold text-(--text-color) pr-4">¿Qué diferencia hay entre el plan Gratis y el Premium?</h4>
+          <lucide-icon [img]="ChevronDownIcon" class="text-(--accent-color) w-5 h-5 shrink-0 group-open:rotate-180 transition-transform"></lucide-icon>
+        </summary>
+        <div class="px-6 pb-6 pt-0">
+          <p class="opacity-80 text-(--text-color) leading-relaxed mb-3">
+            El plan <strong>Gratis</strong> es perfecto para ordenar tus finanzas: te permite registrar movimientos, usar el "Switch" Personal/Negocio, ver tu patrimonio indexado a la tasa BCV y crear planes de ahorro.
+          </p>
+          <p class="opacity-80 text-(--text-color) leading-relaxed">
+            El plan <strong>Premium</strong> está diseñado para automatizar y proteger: incluye lectura automática de capturas de Pago Móvil (OCR), cálculo de costo de reposición para comerciantes, evaluador de créditos (Cashea/Krece) y alertas proactivas de devaluación.
+          </p>
+        </div>
+      </details>
+
+      <!-- Pregunta 2 -->
+      <details class="group bg-(--surface-color) rounded-xl border border-(--switch-border) overflow-hidden">
+        <summary class="flex items-center justify-between p-6 cursor-pointer hover:bg-(--bg-color) transition-colors">
+          <h4 class="font-bold text-(--text-color) pr-4">¿Qué tasa de cambio utilizan?</h4>
+          <lucide-icon [img]="ChevronDownIcon" class="text-(--accent-color) w-5 h-5 shrink-0 group-open:rotate-180 transition-transform"></lucide-icon>
+        </summary>
+        <div class="px-6 pb-6 pt-0">
+          <p class="opacity-80 text-(--text-color) leading-relaxed">
+            En el plan Gratuito, el sistema se actualiza diariamente con la tasa oficial del Banco Central de Venezuela (BCV). Si tienes un negocio y necesitas trabajar con tasas paralelas o personalizadas, el plan Premium te permite configurar tu propia tasa (Override manual).
+          </p>
+        </div>
+      </details>
+
+      <!-- Pregunta 3 -->
+      <details class="group bg-(--surface-color) rounded-xl border border-(--switch-border) overflow-hidden">
+        <summary class="flex items-center justify-between p-6 cursor-pointer hover:bg-(--bg-color) transition-colors">
+          <h4 class="font-bold text-(--text-color) pr-4">¿Puedo cambiar de plan en cualquier momento?</h4>
+          <lucide-icon [img]="ChevronDownIcon" class="text-(--accent-color) w-5 h-5 shrink-0 group-open:rotate-180 transition-transform"></lucide-icon>
+        </summary>
+        <div class="px-6 pb-6 pt-0">
+          <p class="opacity-80 text-(--text-color) leading-relaxed">
+            Sí. Puedes empezar con el plan gratuito y hacer upgrade a Premium cuando lo necesites. Si decides cancelar el Premium, volverás al plan gratuito y no perderás tu historial. Solo perderás acceso a las funcionalidades avanzadas hasta que vuelvas a activarlo.
+          </p>
+        </div>
+      </details>
+
+      <!-- Pregunta 4 -->
+      <details class="group bg-(--surface-color) rounded-xl border border-(--switch-border) overflow-hidden">
+        <summary class="flex items-center justify-between p-6 cursor-pointer hover:bg-(--bg-color) transition-colors">
+          <h4 class="font-bold text-(--text-color) pr-4">¿Cómo funciona la lectura automática de capturas (OCR)?</h4>
+          <lucide-icon [img]="ChevronDownIcon" class="text-(--accent-color) w-5 h-5 shrink-0 group-open:rotate-180 transition-transform"></lucide-icon>
+        </summary>
+        <div class="px-6 pb-6 pt-0">
+          <p class="opacity-80 text-(--text-color) leading-relaxed">
+            En lugar de llenar un formulario manualmente, simplemente subes una captura de pantalla de tu Pago Móvil (del banco o del SMS). El sistema extrae automáticamente el monto, la fecha y el beneficiario, ahorrándote tiempo y evitando errores de transcripción. Esta funcionalidad está disponible solo en el plan Premium.
+          </p>
+        </div>
+      </details>
+
+    </div>
+  </div>
+
+
+  <!-- ========================================== -->
+  <!-- SECCIÓN 3: USO DIARIO                      -->
+  <!-- ========================================== -->
+  <div class="mb-12">
+    <div class="flex items-center gap-2 mb-6">
+      <lucide-icon [img]="ChartBarIcon" class="text-(--accent-color) w-5 h-5"></lucide-icon>
+      <h3 class="rubik-title text-xl font-bold text-(--text-color)">Uso Diario</h3>
+    </div>
+    
+    <div class="space-y-4">
+      
+      <!-- Pregunta 1 -->
+      <details class="group bg-(--surface-color) rounded-xl border border-(--switch-border) overflow-hidden">
+        <summary class="flex items-center justify-between p-6 cursor-pointer hover:bg-(--bg-color) transition-colors">
+          <h4 class="font-bold text-(--text-color) pr-4">¿Cómo funciona el "Switch" Personal / Negocio?</h4>
+          <lucide-icon [img]="ChevronDownIcon" class="text-(--accent-color) w-5 h-5 shrink-0 group-open:rotate-180 transition-transform"></lucide-icon>
+        </summary>
+        <div class="px-6 pb-6 pt-0">
+          <p class="opacity-80 text-(--text-color) leading-relaxed">
+            Es un interruptor en tu dashboard. Al activarlo, el sistema separa visual y analíticamente tus finanzas. Te ayuda a calcular la ganancia neta real de tu negocio sin que se mezcle con tus gastos personales de comida o servicios. Puedes cambiar entre ambos entornos con un solo clic.
+          </p>
+        </div>
+      </details>
+
+      <!-- Pregunta 2 -->
+      <details class="group bg-(--surface-color) rounded-xl border border-(--switch-border) overflow-hidden">
+        <summary class="flex items-center justify-between p-6 cursor-pointer hover:bg-(--bg-color) transition-colors">
+          <h4 class="font-bold text-(--text-color) pr-4">¿Qué es el "Costo de Reposición" y por qué es importante?</h4>
+          <lucide-icon [img]="ChevronDownIcon" class="text-(--accent-color) w-5 h-5 shrink-0 group-open:rotate-180 transition-transform"></lucide-icon>
+        </summary>
+        <div class="px-6 pb-6 pt-0">
+          <p class="opacity-80 text-(--text-color) leading-relaxed">
+            Es una función exclusiva para independientes en el plan Premium. Si vendes un producto hoy, el sistema calcula cuánto te costará volver a comprarlo mañana considerando la variación cambiaria. Te alerta si tu margen de ganancia real se está destruyendo por la inflación, para que ajustes tus precios a tiempo.
+          </p>
+        </div>
+      </details>
+
+      <!-- Pregunta 3 -->
+      <details class="group bg-(--surface-color) rounded-xl border border-(--switch-border) overflow-hidden">
+        <summary class="flex items-center justify-between p-6 cursor-pointer hover:bg-(--bg-color) transition-colors">
+          <h4 class="font-bold text-(--text-color) pr-4">¿Cómo me ayuda el evaluador de créditos (Cashea/Krece)?</h4>
+          <lucide-icon [img]="ChevronDownIcon" class="text-(--accent-color) w-5 h-5 shrink-0 group-open:rotate-180 transition-transform"></lucide-icon>
+        </summary>
+        <div class="px-6 pb-6 pt-0">
+          <p class="opacity-80 text-(--text-color) leading-relaxed">
+            Antes de asumir una nueva cuota, introduces el precio total, la inicial y el número de pagos. El sistema cruza esa información con tus ingresos y gastos actuales, y te dice con frialdad matemática si puedes pagarlo sin ahogar tu flujo de caja quincenal. Es como tener un asesor financiero en tu bolsillo.
+          </p>
+        </div>
+      </details>
+
+      <!-- Pregunta 4 -->
+      <details class="group bg-(--surface-color) rounded-xl border border-(--switch-border) overflow-hidden">
+        <summary class="flex items-center justify-between p-6 cursor-pointer hover:bg-(--bg-color) transition-colors">
+          <h4 class="font-bold text-(--text-color) pr-4">¿Qué son las "Alertas proactivas de cobertura"?</h4>
+          <lucide-icon [img]="ChevronDownIcon" class="text-(--accent-color) w-5 h-5 shrink-0 group-open:rotate-180 transition-transform"></lucide-icon>
+        </summary>
+        <div class="px-6 pb-6 pt-0">
+          <p class="opacity-80 text-(--text-color) leading-relaxed">
+            Son notificaciones en tu dashboard que aparecen cuando el sistema detecta que tienes demasiada liquidez retenida en Bolívares. Te avisa cuántos dólares has perdido en poder de compra esa semana y te sugiere cambiar a divisas o comprar inventario antes de que la devaluación siga comiéndose tu patrimonio.
+          </p>
+        </div>
+      </details>
+
+    </div>
+  </div>
+
+
+  <!-- ========================================== -->
+  <!-- CTA FINAL                                  -->
+  <!-- ========================================== -->
+  <div class="text-center mt-16 p-8 bg-(--surface-color) rounded-2xl border border-(--switch-border)">
+    <h3 class="rubik-title text-2xl font-bold mb-4 text-(--text-color)">
+      ¿No encontraste tu respuesta?
+    </h3>
+    <p class="opacity-80 mb-6 text-(--text-color)">
+      Nuestro equipo está listo para ayudarte. Escríbenos y te respondemos en menos de 24 horas.
+    </p>
+    <button routerLink="/contact" class="btn-primary text-base px-8 py-3">
+      Contactar soporte
+    </button>
+  </div>
+
 </div>
