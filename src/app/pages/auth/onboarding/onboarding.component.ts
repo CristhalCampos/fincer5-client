@@ -2,104 +2,119 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
+import {
+  LucideAngularModule,
+  UserIcon,
+  BriefcaseIcon,
+  LayersIcon,
+  WalletIcon,
+  PiggyBankIcon,
+  FileTextIcon,
+  DollarSignIcon,
+  CheckIcon,
+  LoaderIcon
+} from 'lucide-angular';
 
 interface OnboardingStep {
   id: number;
   title: string;
   subtitle: string;
-  key: string; // Para mapear la respuesta en el JSON
-  icon?: string;
-  type: 'boolean' | 'select';
-  options: { label: string; value: any; sublabel?: string; icon?: string }[];
+  key: string;
+  icon: any;
+  type: 'single' | 'boolean';
+  options: { label: string; value: any; sublabel?: string; icon?: any }[];
 }
 
 @Component({
   selector: 'app-onboarding',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, LucideAngularModule],
   templateUrl: './onboarding.component.html'
 })
 export class OnboardingComponent {
+  readonly UserIcon = UserIcon;
+  readonly BriefcaseIcon = BriefcaseIcon;
+  readonly LayersIcon = LayersIcon;
+  readonly WalletIcon = WalletIcon;
+  readonly PiggyBankIcon = PiggyBankIcon;
+  readonly FileTextIcon = FileTextIcon;
+  readonly DollarSignIcon = DollarSignIcon;
+  readonly CheckIcon = CheckIcon;
+  readonly LoaderIcon = LoaderIcon;
+
   currentStepIndex = 0;
   isLoading = false;
-  private refreshToken: string = '';
 
-  // 📦 Aquí acumulamos las respuestas temporalmente
   responses: Record<string, any> = {
-    hasRecurringExpenses: null,
-    hasFixedIncome: null,
-    hasSavingsGoals: null,
-    hasFreelanceIncome: null,
-    hasClientInvoices: null,
-    hasProviders: null,
-    accountType: null
+    accountType: undefined,
+    hasFixedIncome: undefined,
+    hasFreelanceIncome: undefined,
+    hasSavingsGoals: undefined,
+    hasClientInvoices: undefined,
+    displayCurrency: undefined
   };
 
   steps: OnboardingStep[] = [
     {
       id: 1,
-      title: '¿Necesitas registrar gastos personales recurrentes como comida, servicios o transporte?',
-      subtitle: 'Esto nos ayudará a automatizar tus proyecciones mensuales y ahorrarte tiempo.',
-      key: 'hasRecurringExpenses',
-      icon: '📝',
-      type: 'boolean',
-      options: [{ label: 'Sí', value: true }, { label: 'No', value: false }]
+      title: '¿Cómo planeas usar Fincer5?',
+      subtitle: 'Esto definirá las categorías y herramientas que veremos primero.',
+      key: 'accountType',
+      icon: UserIcon,
+      type: 'single',
+      options: [
+        { label: 'Solo Personal', value: 'PERSONAL', sublabel: 'Gastos, nómina y ahorro personal', icon: UserIcon },
+        { label: 'Solo Profesional', value: 'PROFESSIONAL', sublabel: 'Freelance, ventas o negocio independiente', icon: BriefcaseIcon },
+        { label: 'Combinado (Switch)', value: 'COMBINED', sublabel: 'Quiero separar mis finanzas personales y de negocio', icon: LayersIcon }
+      ]
     },
     {
       id: 2,
-      title: '¿Recibes un salario fijo o ingresos personales constantes?',
-      subtitle: '',
-      key: 'hasFixedIncome',
-      type: 'boolean',
+      title: '¿Cuál es tu tipo principal de ingresos?',
+      subtitle: 'Nos ayuda a proyectar mejor tu flujo de caja mensual.',
+      key: 'incomeType', // Clave temporal, luego la dividimos
+      icon: WalletIcon,
+      type: 'single',
       options: [
-        { label: 'Sí, recibo un salario fijo', value: true },
-        { label: 'No, mis ingresos son variables', value: false }
+        { label: 'Salario fijo o nómina', value: 'FIXED', icon: BriefcaseIcon },
+        { label: 'Ingresos variables (Freelance/Ventas)', value: 'VARIABLE', icon: WalletIcon },
+        { label: 'Ambos (Fijo y Variable)', value: 'BOTH', icon: LayersIcon }
       ]
     },
     {
       id: 3,
-      title: '¿Quieres establecer metas de ahorro para objetivos personales (viajes, emergencias, compras)?',
-      subtitle: 'Crea fondos específicos para tus viajes, emergencias o compras importantes (como una casa o un carro) de forma automática.',
+      title: '¿Te gustaría establecer metas de ahorro?',
+      subtitle: 'Crea fondos específicos para emergencias, viajes o compras importantes.',
       key: 'hasSavingsGoals',
-      icon: '🐷',
-      type: 'boolean',
-      options: [{ label: 'Sí, quiero ahorrar', value: true }, { label: 'Ahora no', value: false }]
+      icon: PiggyBankIcon,
+      type: 'single',
+      options: [
+        { label: 'Sí, quiero crear metas de ahorro', value: true },
+        { label: 'No por el momento', value: false }
+      ]
     },
     {
       id: 4,
-      title: '¿Recibes pagos por servicios profesionales, trabajos freelance o ventas?',
-      subtitle: 'Esta información nos ayuda a personalizar tu experiencia financiera y reportes de impuestos.',
-      key: 'hasFreelanceIncome',
-      type: 'boolean',
-      options: [{ label: 'Sí, recibo este tipo de ingresos', value: true }, { label: 'No, actualmente no', value: false }]
+      title: '¿Necesitas emitir facturas o controlar cuentas por cobrar?',
+      subtitle: 'Ideal si tienes clientes que te pagan a 30, 60 o 90 días.',
+      key: 'hasClientInvoices',
+      icon: FileTextIcon,
+      type: 'single',
+      options: [
+        { label: 'Sí, necesito facturar y cobrar', value: true },
+        { label: 'No, mis ingresos son inmediatos', value: false }
+      ]
     },
     {
       id: 5,
-      title: '¿Necesitas llevar control de dinero que te deben clientes o pagos pendientes?',
-      subtitle: '',
-      key: 'hasClientInvoices',
-      type: 'boolean',
-      options: [{ label: 'Sí, necesito llevar este control', value: true }, { label: 'No, por el momento no', value: false }]
-    },
-    {
-      id: 6,
-      title: '¿Pagas regularmente a proveedores o colaboradores?',
-      subtitle: '',
-      key: 'hasProviders',
-      icon: '💵',
-      type: 'boolean',
-      options: [{ label: 'Sí, de forma habitual', value: true }, { label: 'No, por ahora no', value: false }]
-    },
-    {
-      id: 7,
-      title: '¿Cómo planeas usar la aplicación?',
-      subtitle: 'Selecciona la opción que mejor se adapte a tus necesidades para personalizar tu experiencia financiera.',
-      key: 'accountType',
-      type: 'select',
+      title: '¿En qué moneda prefieres ver tus reportes?',
+      subtitle: 'Puedes cambiar esto en cualquier momento desde la configuración.',
+      key: 'displayCurrency',
+      icon: DollarSignIcon,
+      type: 'single',
       options: [
-        { label: 'Personal', value: 'PERSONAL', icon: '👤' },
-        { label: 'Profesional', value: 'PROFESIONAL', icon: '💼' },
-        { label: 'Mixto', value: 'MIXTO', icon: '📊' }
+        { label: 'Dólares (USD)', value: 'USD', sublabel: 'Recomendado para proteger tu patrimonio de la devaluación', icon: DollarSignIcon },
+        { label: 'Bolívares (VES)', value: 'VES', sublabel: 'Indexado automáticamente a la tasa del día', icon: WalletIcon }
       ]
     }
   ];
@@ -117,10 +132,20 @@ export class OnboardingComponent {
   selectOption(value: any) {
     const key = this.currentStep.key;
     this.responses[key] = value;
+
+    // Lógica especial para el paso 2: mapear a las dos variables de Prisma
+    if (key === 'incomeType') {
+      this.responses['hasFixedIncome'] = (value === 'FIXED' || value === 'BOTH');
+      this.responses['hasFreelanceIncome'] = (value === 'VARIABLE' || value === 'BOTH');
+    }
+  }
+
+  isStepValid(): boolean {
+    return this.responses[this.currentStep.key] !== undefined;
   }
 
   nextStep() {
-    if (this.responses[this.currentStep.key] === null) return; // Validación rápida
+    if (!this.isStepValid()) return;
 
     if (this.currentStepIndex < this.steps.length - 1) {
       this.currentStepIndex++;
@@ -136,12 +161,14 @@ export class OnboardingComponent {
   }
 
   submitOnboarding() {
-    if (this.responses[this.currentStep.key] === null) return;
+    if (!this.isStepValid()) return;
     
     this.isLoading = true;
     
-    // 2. Consumes el método del servicio de forma limpia
-    this.authService.completeOnboarding(this.responses).subscribe({
+    // Eliminamos la clave temporal 'incomeType' antes de enviar al backend
+    const { incomeType, ...finalResponses } = this.responses;
+
+    this.authService.completeOnboarding(finalResponses).subscribe({
       next: (res) => {
         console.log('Configuración guardada exitosamente:', res);
         this.router.navigate(['/dashboard']);
@@ -149,7 +176,7 @@ export class OnboardingComponent {
       error: (err) => {
         this.isLoading = false;
         console.error('Error en onboarding:', err);
-        alert(err.error?.message || 'Error al guardar la configuración.');
+        alert(err.error?.message || 'Error al guardar la configuración. Inténtalo de nuevo.');
       }
     });
   }

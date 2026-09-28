@@ -3,14 +3,26 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
+import {
+  LucideAngularModule,
+  ShieldCheckIcon,
+  LoaderIcon,
+  ArrowLeftIcon,
+  CircleAlertIcon
+} from 'lucide-angular';
 
 @Component({
   selector: 'app-verify-otp',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, LucideAngularModule],
   templateUrl: './verify-otp.component.html'
 })
 export class VerifyOtpComponent implements OnInit {
+  readonly ShieldCheckIcon = ShieldCheckIcon;
+  readonly LoaderIcon = LoaderIcon;
+  readonly ArrowLeftIcon = ArrowLeftIcon;
+  readonly AlertCircleIcon = CircleAlertIcon;
+
   email: string = '';
   code: string = '';
   isLoading: boolean = false;
@@ -26,6 +38,11 @@ export class VerifyOtpComponent implements OnInit {
     }
   }
 
+  onCodeInput(event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.code = input.value.replace(/\s/g, '');
+  }
+
   onVerify() {
     if (!this.code || !this.email) return;
 
@@ -34,12 +51,11 @@ export class VerifyOtpComponent implements OnInit {
     this.authService.verifyOtp(this.email, this.code).subscribe({
       next: (res: any) => {
         this.isLoading = false;
-        
-        // 🧠 Evaluamos tu campo de Prisma de la respuesta
+
         if (res.user && res.user.isConfigured) {
           this.router.navigate(['/dashboard']);
         } else {
-          // Va directo, la cookie ya está sembrada de forma invisible en el navegador 🤫
+
           this.router.navigate(['/auth/onboarding']);
         }
       },
