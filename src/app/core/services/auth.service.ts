@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap, catchError, of } from 'rxjs';
 import { Router } from '@angular/router';
-import { environmentDev } from '../../../environments/environment';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = `${environmentDev.apiUrl}/auth`;
+  private apiUrl = `${environment.apiUrl}/auth`;
   private accessToken: string | null = null;
   private currentUserSubject = new BehaviorSubject<any>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
@@ -35,16 +35,16 @@ export class AuthService {
 
   // Verificar el código OTP
   verifyOtp(email: string, code: string): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/verify-otp`, 
-      { email, code, userAgent: navigator.userAgent }, 
+    return this.http.post<any>(`${this.apiUrl}/verify-otp`,
+      { email, code, userAgent: navigator.userAgent },
       { withCredentials: true })
       .pipe(tap(res => this.handleAuthentication(res)));
   }
 
   // Iniciar sesión con Google
   loginWithGoogle(googleData: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/google`, 
-      { ...googleData, userAgent: navigator.userAgent }, 
+    return this.http.post<any>(`${this.apiUrl}/google`,
+      { ...googleData, userAgent: navigator.userAgent },
       { withCredentials: true })
       .pipe(tap(res => this.handleAuthentication(res)));
   }
@@ -52,8 +52,8 @@ export class AuthService {
   // Completar el onboarding
   completeOnboarding(onboardingData: any): Observable<any> {
     return this.http.post<any>(
-      `${this.apiUrl}/complete-onboarding`, 
-      onboardingData, 
+      `${this.apiUrl}/complete-onboarding`,
+      onboardingData,
       { withCredentials: true }
     );
   }
