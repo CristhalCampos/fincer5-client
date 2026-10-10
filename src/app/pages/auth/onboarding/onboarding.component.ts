@@ -12,7 +12,9 @@ import {
   FileTextIcon,
   DollarSignIcon,
   CheckIcon,
-  LoaderIcon
+  LoaderIcon,
+  RepeatIcon,
+  TruckIcon
 } from 'lucide-angular';
 
 interface OnboardingStep {
@@ -41,6 +43,8 @@ export class OnboardingComponent {
   readonly DollarSignIcon = DollarSignIcon;
   readonly CheckIcon = CheckIcon;
   readonly LoaderIcon = LoaderIcon;
+  readonly RepeatIcon = RepeatIcon;
+  readonly TruckIcon = TruckIcon;
 
   currentStepIndex = 0;
   isLoading = false;
@@ -51,6 +55,8 @@ export class OnboardingComponent {
     hasFreelanceIncome: undefined,
     hasSavingsGoals: undefined,
     hasClientInvoices: undefined,
+    hasRecurringExpenses: undefined,  // ✅ NUEVO
+    hasProviders: undefined,           // ✅ NUEVO
     displayCurrency: undefined
   };
 
@@ -107,6 +113,30 @@ export class OnboardingComponent {
     },
     {
       id: 5,
+      title: '¿Tienes gastos recurrentes (suscripciones, alquiler, servicios)?',
+      subtitle: 'Te ayudaremos a trackearlos y alertarte antes de que venzan.',
+      key: 'hasRecurringExpenses', // ✅ NUEVO
+      icon: RepeatIcon,
+      type: 'single',
+      options: [
+        { label: 'Sí, tengo gastos recurrentes', value: true },
+        { label: 'No por el momento', value: false }
+      ]
+    },
+    {
+      id: 6,
+      title: '¿Trabajas con proveedores o necesitas controlar cuentas por pagar?',
+      subtitle: 'Útil para llevar control de lo que debes a proveedores.',
+      key: 'hasProviders', // ✅ NUEVO
+      icon: TruckIcon,
+      type: 'single',
+      options: [
+        { label: 'Sí, tengo proveedores', value: true },
+        { label: 'No por el momento', value: false }
+      ]
+    },
+    {
+      id: 7,
       title: '¿En qué moneda prefieres ver tus reportes?',
       subtitle: 'Puedes cambiar esto en cualquier momento desde la configuración.',
       key: 'displayCurrency',
@@ -171,6 +201,7 @@ export class OnboardingComponent {
     this.authService.completeOnboarding(finalResponses).subscribe({
       next: (res) => {
         console.log('Configuración guardada exitosamente:', res);
+        this.isLoading = false;
         this.router.navigate(['/dashboard']);
       },
       error: (err) => {
