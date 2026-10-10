@@ -7,15 +7,7 @@ import { FooterComponent } from './layout/footer/footer.component';
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet, NavbarComponent, FooterComponent],
-  template: `
-    <app-navbar />
-    <main>
-      <router-outlet />
-    </main>
-    <app-footer />
-  `
+  templateUrl: 'app.html'
 })
 export class App {
-  protected readonly appName = signal('Fincer5');
-  protected readonly slogan = signal('App Web de Gestión financiera');
 }

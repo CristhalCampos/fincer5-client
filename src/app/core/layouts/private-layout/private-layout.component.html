@@ -1,0 +1,253 @@
+<div class="flex min-h-screen bg-(--bg-color) text-(--text-color) font-sans">
+  
+  <!-- Overlay para móvil (sidebar) -->
+  @if (isSidebarOpen() && isMobile()) {
+    <div class="fixed inset-0 bg-black/50 z-40" (click)="toggleSidebar()"></div>
+  }
+
+  <!-- Overlay para user menu -->
+  @if (isUserMenuOpen()) {
+    <div class="fixed inset-0 z-40" (click)="closeUserMenu()"></div>
+  }
+
+  <!-- ========================================== -->
+  <!-- SIDEBAR (Navegación Lateral)               -->
+  <!-- ========================================== -->
+  <aside 
+    class="fixed lg:static inset-y-0 left-0 z-50 w-64 bg-(--surface-color) border-r border-(--switch-border) transform transition-transform duration-300 ease-in-out lg:transform-none flex flex-col"
+    [class.translate-x-0]="isSidebarOpen() || !isMobile()"
+    [class.-translate-x-full]="!isSidebarOpen() && isMobile()"
+  >
+    
+    <!-- Logo -->
+    <div class="h-16 flex items-center px-4 md:px-6 border-b border-(--switch-border) shrink-0">
+      <span class="rubik-title text-xl md:text-2xl font-bold text-(--text-color) truncate">
+        fincer<span class="text-(--accent-color)">5</span>
+      </span>
+      <button class="ml-auto lg:hidden p-2 rounded-lg hover:bg-(--bg-color) text-(--text-color) -mr-2" (click)="toggleSidebar()" aria-label="Cerrar menú">
+        <lucide-icon [img]="XIcon" class="w-6 h-6"></lucide-icon>
+      </button>
+    </div>
+
+    <!-- Menú de Navegación -->
+    <nav class="flex-1 px-3 md:px-4 py-4 space-y-1 overflow-y-auto" role="navigation" aria-label="Navegación principal">
+      <a 
+        routerLink="/dashboard" 
+        routerLinkActive="bg-(--accent-color)/10 text-(--accent-color)" 
+        [routerLinkActiveOptions]="{exact: true}" 
+        class="flex items-center gap-3 px-4 py-3 rounded-xl text-(--text-color) opacity-70 hover:bg-(--bg-color) hover:opacity-100 transition-colors font-medium min-h-11"
+        (click)="toggleSidebar()"
+      >
+        <lucide-icon [img]="LayoutDashboardIcon" class="w-5 h-5 shrink-0"></lucide-icon>
+        <span>Dashboard</span>
+      </a>
+      
+      <a 
+        routerLink="/dashboard/transactions" 
+        routerLinkActive="bg-(--accent-color)/10 text-(--accent-color)" 
+        class="flex items-center gap-3 px-4 py-3 rounded-xl text-(--text-color) opacity-70 hover:bg-(--bg-color) hover:opacity-100 transition-colors font-medium min-h-11"
+        (click)="toggleSidebar()"
+      >
+        <lucide-icon [img]="WalletIcon" class="w-5 h-5 shrink-0"></lucide-icon>
+        <span>Movimientos</span>
+      </a>
+
+      <a 
+        routerLink="/dashboard/goals" 
+        routerLinkActive="bg-(--accent-color)/10 text-(--accent-color)" 
+        class="flex items-center gap-3 px-4 py-3 rounded-xl text-(--text-color) opacity-70 hover:bg-(--bg-color) hover:opacity-100 transition-colors font-medium min-h-11"
+        (click)="toggleSidebar()"
+      >
+        <lucide-icon [img]="PiggyBankIcon" class="w-5 h-5 shrink-0"></lucide-icon>
+        <span>Metas de Ahorro</span>
+      </a>
+
+      <a 
+        routerLink="/dashboard/reports" 
+        routerLinkActive="bg-(--accent-color)/10 text-(--accent-color)" 
+        class="flex items-center gap-3 px-4 py-3 rounded-xl text-(--text-color) opacity-70 hover:bg-(--bg-color) hover:opacity-100 transition-colors font-medium min-h-11"
+        (click)="toggleSidebar()"
+      >
+        <lucide-icon [img]="TrendingUpIcon" class="w-5 h-5 shrink-0"></lucide-icon>
+        <span>Reportes</span>
+      </a>
+    </nav>
+
+    <!-- Perfil y Logout -->
+    <div class="p-3 md:p-4 border-t border-(--switch-border) shrink-0">
+      <!-- User Info -->
+      <div class="flex items-center gap-3 mb-3">
+        <div class="w-9 h-9 md:w-10 md:h-10 rounded-full bg-(--accent-color)/10 flex items-center justify-center text-(--accent-color) font-bold shrink-0">
+          {{ user?.name?.charAt(0) || 'U' }}
+        </div>
+        <div class="flex-1 min-w-0 hidden md:block">
+          <p class="text-sm font-semibold text-(--text-color) truncate">{{ user?.name }}</p>
+          <p class="text-xs opacity-60 text-(--text-color) truncate">{{ user?.email }}</p>
+        </div>
+      </div>
+      
+      <!-- Logout Button -->
+      <button 
+        (click)="logout()" 
+        class="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border border-(--switch-border) text-(--text-color) opacity-70 hover:bg-red-500/10 hover:text-red-500 hover:border-red-500/20 transition-all text-sm font-medium min-h-11"
+      >
+        <lucide-icon [img]="LogOutIcon" class="w-4 h-4 shrink-0"></lucide-icon>
+        <span>Cerrar Sesión</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ========================================== -->
+  <!-- CONTENIDO PRINCIPAL                        -->
+  <!-- ========================================== -->
+  <main class="flex-1 flex flex-col min-w-0 overflow-hidden">
+    
+    <!-- Header Móvil / Tablet -->
+    <header class="lg:hidden h-14 bg-(--surface-color) border-b border-(--switch-border) flex items-center justify-between px-3 md:px-4 sticky top-0 z-30 shrink-0">
+      <button 
+        (click)="toggleSidebar()" 
+        class="p-2 rounded-lg hover:bg-(--bg-color) text-(--text-color) min-h-11 min-w-11 flex items-center justify-center"
+        aria-label="Abrir menú"
+      >
+        <lucide-icon [img]="MenuIcon" class="w-6 h-6"></lucide-icon>
+      </button>
+      
+      <span class="rubik-title font-bold text-lg md:text-xl text-(--text-color) flex-1 text-center">
+        fincer<span class="text-(--accent-color)">5</span>
+      </span>
+
+      <!-- User Menu Button (Mobile/Tablet) -->
+      <div class="relative w-8 md:w-10">
+        <button 
+          (click)="toggleUserMenu($event)"
+          class="w-full h-8 md:h-9 rounded-full bg-(--accent-color)/10 flex items-center justify-center text-(--accent-color) font-medium text-sm min-h-11"
+          aria-label="Menú de usuario"
+          [attr.aria-expanded]="isUserMenuOpen()"
+        >
+          {{ user?.name?.charAt(0) || 'U' }}
+        </button>
+
+        <!-- User Dropdown Menu -->
+        @if (isUserMenuOpen()) {
+          <div class="absolute right-0 top-full mt-2 w-48 md:w-56 bg-(--surface-color) border border-(--switch-border) rounded-xl shadow-lg py-2 z-50 animate-in fade-in-0 zoom-in-95 duration-150">
+            <div class="px-4 py-3 border-b border-(--switch-border)">
+              <p class="text-sm font-semibold text-(--text-color) truncate">{{ user?.name }}</p>
+              <p class="text-xs opacity-60 text-(--text-color) truncate">{{ user?.email }}</p>
+            </div>
+            
+            <a 
+              routerLink="/dashboard/settings" 
+              class="flex items-center gap-3 px-4 py-2.5 text-sm text-(--text-color) opacity-70 hover:bg-(--bg-color) hover:opacity-100 transition-colors min-h-11"
+              (click)="closeUserMenu()"
+            >
+              <lucide-icon [img]="SettingsIcon" class="w-4 h-4 shrink-0"></lucide-icon>
+              <span>Configuración</span>
+            </a>
+            
+            <a 
+              routerLink="/dashboard/profile" 
+              class="flex items-center gap-3 px-4 py-2.5 text-sm text-(--text-color) opacity-70 hover:bg-(--bg-color) hover:opacity-100 transition-colors min-h-11"
+              (click)="closeUserMenu()"
+            >
+              <lucide-icon [img]="UserIcon" class="w-4 h-4 shrink-0"></lucide-icon>
+              <span>Mi Perfil</span>
+            </a>
+            
+            <hr class="my-2 border-(--switch-border)">
+            
+            <button 
+              (click)="logout()" 
+              class="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-500 hover:bg-red-500/10 transition-colors min-h-11"
+            >
+              <lucide-icon [img]="LogOutIcon" class="w-4 h-4 shrink-0"></lucide-icon>
+              <span>Cerrar Sesión</span>
+            </button>
+          </div>
+        }
+      </div>
+    </header>
+
+    <!-- Header Desktop (solo en lg+) -->
+    <header class="hidden lg:flex lg:items-center lg:justify-between lg:px-6 lg:py-4 bg-(--surface-color) border-b border-(--switch-border) sticky top-0 z-30 shrink-0">
+      <div class="flex items-center gap-4">
+        <span class="rubik-title text-2xl font-bold text-(--text-color)">
+          fincer<span class="text-(--accent-color)">5</span>
+        </span>
+        <nav class="hidden md:flex items-center gap-1" aria-label="Navegación rápida">
+          <a routerLink="/dashboard" routerLinkActive="bg-(--accent-color)/10 text-(--accent-color)" [routerLinkActiveOptions]="{exact: true}" class="px-4 py-2 rounded-lg text-sm font-medium text-(--text-color) opacity-70 hover:opacity-100 hover:bg-(--bg-color) transition-colors min-h-10 flex items-center">
+            Dashboard
+          </a>
+          <a routerLink="/dashboard/transactions" routerLinkActive="bg-(--accent-color)/10 text-(--accent-color)" class="px-4 py-2 rounded-lg text-sm font-medium text-(--text-color) opacity-70 hover:opacity-100 hover:bg-(--bg-color) transition-colors min-h-10 flex items-center">
+            Movimientos
+          </a>
+          <a routerLink="/dashboard/goals" routerLinkActive="bg-(--accent-color)/10 text-(--accent-color)" class="px-4 py-2 rounded-lg text-sm font-medium text-(--text-color) opacity-70 hover:opacity-100 hover:bg-(--bg-color) transition-colors min-h-10 flex items-center">
+            Metas
+          </a>
+          <a routerLink="/dashboard/reports" routerLinkActive="bg-(--accent-color)/10 text-(--accent-color)" class="px-4 py-2 rounded-lg text-sm font-medium text-(--text-color) opacity-70 hover:opacity-100 hover:bg-(--bg-color) transition-colors min-h-10 flex items-center">
+            Reportes
+          </a>
+        </nav>
+      </div>
+
+      <!-- User Menu Desktop -->
+      <div class="relative">
+        <button 
+          (click)="toggleUserMenu($event)"
+          class="flex items-center gap-2 px-4 py-2 rounded-full bg-(--accent-color)/10 text-(--accent-color) font-medium text-sm hover:bg-(--accent-color)/20 transition-colors min-h-10"
+          aria-label="Menú de usuario"
+          [attr.aria-expanded]="isUserMenuOpen()"
+        >
+          <div class="w-8 h-8 rounded-full bg-(--accent-color)/10 flex items-center justify-center text-(--accent-color) font-bold">
+            {{ user?.name?.charAt(0) || 'U' }}
+          </div>
+          <span class="hidden sm:inline">{{ user?.name }}</span>
+          <lucide-icon [img]="ChevronDownIcon" class="w-4 h-4"></lucide-icon>
+        </button>
+
+        <!-- User Dropdown Menu Desktop -->
+        @if (isUserMenuOpen()) {
+          <div class="absolute right-0 top-full mt-2 w-56 bg-(--surface-color) border border-(--switch-border) rounded-xl shadow-lg py-2 z-50 animate-in fade-in-0 zoom-in-95 duration-150">
+            <div class="px-4 py-3 border-b border-(--switch-border)">
+              <p class="text-sm font-semibold text-(--text-color)">{{ user?.name }}</p>
+              <p class="text-xs opacity-60 text-(--text-color)">{{ user?.email }}</p>
+            </div>
+            
+            <a 
+              routerLink="/dashboard/settings" 
+              class="flex items-center gap-3 px-4 py-2.5 text-sm text-(--text-color) opacity-70 hover:bg-(--bg-color) hover:opacity-100 transition-colors min-h-10"
+              (click)="closeUserMenu()"
+            >
+              <lucide-icon [img]="SettingsIcon" class="w-4 h-4 shrink-0"></lucide-icon>
+              <span>Configuración</span>
+            </a>
+            
+            <a 
+              routerLink="/dashboard/profile" 
+              class="flex items-center gap-3 px-4 py-2.5 text-sm text-(--text-color) opacity-70 hover:bg-(--bg-color) hover:opacity-100 transition-colors min-h-10"
+              (click)="closeUserMenu()"
+            >
+              <lucide-icon [img]="UserIcon" class="w-4 h-4 shrink-0"></lucide-icon>
+              <span>Mi Perfil</span>
+            </a>
+            
+            <hr class="my-2 border-(--switch-border)">
+            
+            <button 
+              (click)="logout()" 
+              class="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-500 hover:bg-red-500/10 transition-colors min-h-10"
+            >
+              <lucide-icon [img]="LogOutIcon" class="w-4 h-4 shrink-0"></lucide-icon>
+              <span>Cerrar Sesión</span>
+            </button>
+          </div>
+        }
+      </div>
+    </header>
+
+    <!-- 🌟 AQUÍ SE INYECTAN LAS VISTAS HIJAS (Dashboard, Transacciones, etc.) -->
+    <div class="flex-1 overflow-y-auto p-3 sm:p-4 md:p-6 lg:p-8">
+      <router-outlet></router-outlet>
+    </div>
+    
+  </main>
+</div>

@@ -1,7 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal, HostListener } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { NgClass } from '@angular/common';
-import { LucideAngularModule, Sun, Moon } from 'lucide-angular';
+import { LucideAngularModule, Sun, Moon, Menu, X } from 'lucide-angular';
 import { ThemeService } from '../../core/services/theme.service';
 
 @Component({
@@ -15,4 +15,25 @@ export class NavbarComponent {
   
   readonly SunIcon = Sun;
   readonly MoonIcon = Moon;
+  readonly MenuIcon = Menu;
+  readonly XIcon = X;
+
+  // Mobile menu state
+  isMobileMenuOpen = signal(false);
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event) {
+    const target = event.target as Window;
+    if (target.innerWidth >= 768) {
+      this.isMobileMenuOpen.set(false);
+    }
+  }
+
+  toggleMobileMenu() {
+    this.isMobileMenuOpen.update(value => !value);
+  }
+
+  closeMobileMenu() {
+    this.isMobileMenuOpen.set(false);
+  }
 }

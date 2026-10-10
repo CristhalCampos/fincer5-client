@@ -1,4 +1,7 @@
 import { Routes } from '@angular/router';
+import { PrivateLayoutComponent } from './core/layouts/private-layout/private-layout.component';
+import { DashboardComponent } from './pages/private/dashboard/dashboard.component';
+import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
   {
@@ -26,20 +29,22 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/public/privacy/privacy.component').then(m => m.PrivacyComponent)
   },
   {
-    path: 'auth/login',
-    loadComponent: () => import('./pages/auth/login/login.component').then(m => m.LoginComponent)
-  },
-  {
-    path: 'auth/verify-otp',
-    loadComponent: () => import('./pages/auth/verify-otp/verify-otp.component').then(m => m.VerifyOtpComponent)
-  },
-  {
-    path: 'auth/onboarding',
-    loadComponent: () => import('./pages/auth/onboarding/onboarding.component').then(m => m.OnboardingComponent)
+    path: 'auth',
+    children: [
+      { path: 'login', loadComponent: () => import('./pages/auth/login/login.component').then(m => m.LoginComponent) },
+      { path: 'verify-otp', loadComponent: () => import('./pages/auth/verify-otp/verify-otp.component').then(m => m.VerifyOtpComponent) },
+      { path: 'onboarding', loadComponent: () => import('./pages/auth/onboarding/onboarding.component').then(m => m.OnboardingComponent) },
+    ]
   },
   {
     path: 'dashboard',
-    loadComponent: () => import('./pages/private/dashboard/dashboard.component').then(m => m.DashboardComponent)
+    component: PrivateLayoutComponent,
+    canActivate: [authGuard],
+    children: [
+      { path: '', component: DashboardComponent },
+      // { path: 'transactions', component: TransactionsComponent },
+      // { path: 'goals', component: GoalsComponent },
+    ]
   },
   // Redirección por defecto
   { path: '', redirectTo: 'home', pathMatch: 'full' },

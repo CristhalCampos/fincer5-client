@@ -1,30 +1,30 @@
 <!-- ========================================== -->
 <!-- 1. HERO SECTION                            -->
 <!-- ========================================== -->
-<section class="flex flex-col items-center justify-center min-h-[85vh] text-center px-6 py-20">
-  <p class="text-(--accent-color) font-semibold mb-4 tracking-wide uppercase text-sm">
+<section class="flex flex-col items-center justify-center min-h-[85vh] text-center px-4 sm:px-6 lg:px-8 py-12 sm:py-20">
+  <p class="text-(--accent-color) font-semibold mb-4 tracking-wide uppercase text-xs sm:text-sm">
     Gestión financiera diseñada para la realidad venezolana
   </p>
   
-  <h1 class="rubik-title text-4xl md:text-6xl font-bold mb-6 text-(--text-color) leading-tight max-w-4xl">
+  <h1 class="rubik-title text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-(--text-color) leading-tight max-w-4xl mx-auto">
     Tu dinero en Bolívares pierde valor cada día. <br class="hidden md:block">
     <span class="text-(--accent-color)">fincer5</span> te dice cómo protegerlo.
   </h1>
   
-  <p class="max-w-2xl text-lg md:text-xl mb-8 opacity-80 text-(--text-color)">
+  <p class="max-w-2xl text-base sm:text-lg md:text-xl mb-8 opacity-80 text-(--text-color) mx-auto">
     Deja de calcular "a ojo" tu patrimonio. Indexamos tus saldos a la tasa del día, separamos tus finanzas personales de las de tu negocio, y te decimos si realmente puedes asumir esa nueva cuota.
   </p>
   
-  <div class="flex flex-col sm:flex-row gap-4">
-    <button routerLink="/auth/login" class="btn-primary text-lg px-8 py-4">
+  <div class="flex flex-col sm:flex-row gap-4 w-full max-w-md mx-auto">
+    <button routerLink="/auth/login" class="btn-primary text-base sm:text-lg px-6 sm:px-8 py-3.5 sm:py-4 w-full sm:w-auto">
       Proteger mi dinero Gratis
     </button>
-    <a href="#como-funciona" class="text-(--text-color) opacity-80 hover:opacity-100 font-medium text-lg px-8 py-4 border border-(--switch-border) rounded-[0.8rem] transition-all hover:border-(--accent-color)">
+    <a href="#como-funciona" class="text-(--text-color) opacity-80 hover:opacity-100 font-medium text-base sm:text-lg px-6 sm:px-8 py-3.5 sm:py-4 border border-(--switch-border) rounded-[0.8rem] transition-all hover:border-(--accent-color) w-full sm:w-auto text-center">
       Ver cómo funciona
     </a>
   </div>
   
-  <p class="mt-8 text-sm opacity-60 text-(--text-color)">
+  <p class="mt-8 text-xs sm:text-sm opacity-60 text-(--text-color)">
     ✓ Sin tarjeta de crédito &nbsp;&nbsp;|&nbsp;&nbsp; ✓ 100% adaptado al sistema local
   </p>
 </section>
@@ -33,45 +33,45 @@
 <!-- ========================================== -->
 <!-- 2. PROBLEM SECTION (Agitation)             -->
 <!-- ========================================== -->
-<section class="py-20 px-6 bg-(--surface-color)">
+<section class="py-12 sm:py-20 px-4 sm:px-6 lg:px-8 bg-(--surface-color)">
   <div class="max-w-6xl mx-auto">
-    <h2 class="rubik-title text-3xl md:text-4xl font-bold text-center mb-4 text-(--text-color)">
+    <h2 class="rubik-title text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-4 sm:mb-6 lg:mb-12 text-(--text-color)">
       Las apps de afuera no entienden lo que es vivir aquí. <br class="hidden md:block"><span class="text-(--accent-color)">Nosotros sí.</span>
     </h2>
-    <p class="text-center opacity-80 mb-12 max-w-2xl mx-auto text-(--text-color)">
+    <p class="text-center opacity-80 mb-8 sm:mb-12 max-w-2xl mx-auto text-(--text-color)">
       Sabemos que el dinero es tu mayor preocupación diaria. Por eso atacamos los 3 grandes problemas que te hacen perder dinero en silencio:
     </p>
     
-    <div class="grid md:grid-cols-3 gap-8">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
       <!-- Card 1 -->
-      <div class="p-8 rounded-2xl border border-(--switch-border) bg-(--bg-color) hover:border-(--accent-color) transition-all group">
-        <div class="w-12 h-12 rounded-xl bg-(--accent-color)/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-          <lucide-icon [img]="TrendingDownIcon" class="text-(--accent-color) w-6 h-6"></lucide-icon>
+      <div class="p-6 sm:p-8 rounded-2xl border border-(--switch-border) bg-(--bg-color) hover:border-(--accent-color) transition-all group">
+        <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-(--accent-color)/10 flex items-center justify-center mb-3 sm:mb-4 group-hover:scale-110 transition-transform">
+          <lucide-icon [img]="TrendingDownIcon" class="text-(--accent-color) w-5 h-5 sm:w-6 sm:h-6"></lucide-icon>
         </div>
-        <h3 class="rubik-title text-xl font-bold mb-3 text-(--text-color)">La fuga silenciosa por devaluación</h3>
-        <p class="opacity-80 text-(--text-color) leading-relaxed">
+        <h3 class="rubik-title text-lg sm:text-xl font-bold mb-2 sm:mb-3 text-(--text-color)">La fuga silenciosa por devaluación</h3>
+        <p class="opacity-80 text-(--text-color) leading-relaxed text-sm sm:text-base">
           Tienes saldos en Bolívares que pierden valor cada hora. No sabes cuánto estás perdiendo hasta que vas a cambiar. fincer5 te alerta antes de que sea tarde.
         </p>
       </div>
       
       <!-- Card 2 -->
-      <div class="p-8 rounded-2xl border border-(--switch-border) bg-(--bg-color) hover:border-(--accent-color) transition-all group">
-        <div class="w-12 h-12 rounded-xl bg-(--accent-color)/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-          <lucide-icon [img]="StoreIcon" class="text-(--accent-color) w-6 h-6"></lucide-icon>
+      <div class="p-6 sm:p-8 rounded-2xl border border-(--switch-border) bg-(--bg-color) hover:border-(--accent-color) transition-all group">
+        <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-(--accent-color)/10 flex items-center justify-center mb-3 sm:mb-4 group-hover:scale-110 transition-transform">
+          <lucide-icon [img]="StoreIcon" class="text-(--accent-color) w-5 h-5 sm:w-6 sm:h-6"></lucide-icon>
         </div>
-        <h3 class="rubik-title text-xl font-bold mb-3 text-(--text-color)">La ceguera del emprendedor</h3>
-        <p class="opacity-80 text-(--text-color) leading-relaxed">
+        <h3 class="rubik-title text-lg sm:text-xl font-bold mb-2 sm:mb-3 text-(--text-color)">La ceguera del emprendedor</h3>
+        <p class="opacity-80 text-(--text-color) leading-relaxed text-sm sm:text-base">
           Mezclas el dinero de la publicidad con la compra del mercado. Crees que tu negocio es rentable, pero tu cuenta personal está en cero.
         </p>
       </div>
       
       <!-- Card 3 -->
-      <div class="p-8 rounded-2xl border border-(--switch-border) bg-(--bg-color) hover:border-(--accent-color) transition-all group">
-        <div class="w-12 h-12 rounded-xl bg-(--accent-color)/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-          <lucide-icon [img]="AlertTriangleIcon" class="text-(--accent-color) w-6 h-6"></lucide-icon>
+      <div class="p-6 sm:p-8 rounded-2xl border border-(--switch-border) bg-(--bg-color) hover:border-(--accent-color) transition-all group">
+        <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-(--accent-color)/10 flex items-center justify-center mb-3 sm:mb-4 group-hover:scale-110 transition-transform">
+          <lucide-icon [img]="AlertTriangleIcon" class="text-(--accent-color) w-5 h-5 sm:w-6 sm:h-6"></lucide-icon>
         </div>
-        <h3 class="rubik-title text-xl font-bold mb-3 text-(--text-color)">La trampa de las microcuotas</h3>
-        <p class="opacity-80 text-(--text-color) leading-relaxed">
+        <h3 class="rubik-title text-lg sm:text-xl font-bold mb-2 sm:mb-3 text-(--text-color)">La trampa de las microcuotas</h3>
+        <p class="opacity-80 text-(--text-color) leading-relaxed text-sm sm:text-base">
           Cashea, Krece, Multimax... Las compras a plazos se acumulan y tu flujo de caja quincenal colapsa sin que te des cuenta.
         </p>
       </div>
@@ -83,20 +83,20 @@
 <!-- ========================================== -->
 <!-- 3. SOLUTION SECTION (Features)             -->
 <!-- ========================================== -->
-<section id="como-funciona" class="py-20 px-6">
+<section id="como-funciona" class="py-12 sm:py-20 px-4 sm:px-6 lg:px-8">
   <div class="max-w-6xl mx-auto">
-    <h2 class="rubik-title text-3xl md:text-4xl font-bold text-center mb-16 text-(--text-color)">
+    <h2 class="rubik-title text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-10 sm:mb-16 text-(--text-color)">
       Toma el control. Convierte el caos en <span class="text-(--accent-color)">claridad absoluta</span>.
     </h2>
     
-    <div class="space-y-10">
+    <div class="space-y-6 sm:space-y-10">
       <!-- Block 1 -->
-      <div class="flex flex-col md:flex-row items-center gap-8 bg-(--surface-color) p-8 md:p-10 rounded-2xl border border-(--switch-border)">
-        <div class="w-16 h-16 rounded-2xl bg-(--accent-color)/10 flex items-center justify-center shrink-0">
-          <lucide-icon [img]="ShieldIcon" class="text-(--accent-color) w-8 h-8"></lucide-icon>
+      <div class="flex flex-col md:flex-row items-center gap-6 sm:gap-8 bg-(--surface-color) p-6 sm:p-8 md:p-10 rounded-2xl border border-(--switch-border)">
+        <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-(--accent-color)/10 flex items-center justify-center shrink-0">
+          <lucide-icon [img]="ShieldIcon" class="text-(--accent-color) w-7 h-7 sm:w-8 sm:h-8"></lucide-icon>
         </div>
         <div>
-          <h3 class="rubik-title text-2xl font-bold mb-3 text-(--text-color)">Indexación de Patrimonio en Tiempo Real</h3>
+          <h3 class="rubik-title text-xl sm:text-2xl font-bold mb-2 sm:mb-3 text-(--text-color)">Indexación de Patrimonio en Tiempo Real</h3>
           <p class="opacity-80 mb-3 text-(--text-color) leading-relaxed">
             Cada transacción en Bolívares se "congela" a la tasa del día. Abre fincer5 y mira tu patrimonio real en Dólares al instante.
           </p>
@@ -107,12 +107,12 @@
       </div>
       
       <!-- Block 2 -->
-      <div class="flex flex-col md:flex-row-reverse items-center gap-8 bg-(--surface-color) p-8 md:p-10 rounded-2xl border border-(--switch-border)">
-        <div class="w-16 h-16 rounded-2xl bg-(--accent-color)/10 flex items-center justify-center shrink-0">
-          <lucide-icon [img]="RefreshCwIcon" class="text-(--accent-color) w-8 h-8"></lucide-icon>
+      <div class="flex flex-col md:flex-row-reverse items-center gap-6 sm:gap-8 bg-(--surface-color) p-6 sm:p-8 md:p-10 rounded-2xl border border-(--switch-border)">
+        <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-(--accent-color)/10 flex items-center justify-center shrink-0">
+          <lucide-icon [img]="RefreshCwIcon" class="text-(--accent-color) w-7 h-7 sm:w-8 sm:h-8"></lucide-icon>
         </div>
         <div>
-          <h3 class="rubik-title text-2xl font-bold mb-3 text-(--text-color)">El "Switch" Personal / Negocio</h3>
+          <h3 class="rubik-title text-xl sm:text-2xl font-bold mb-2 sm:mb-3 text-(--text-color)">El "Switch" Personal / Negocio</h3>
           <p class="opacity-80 mb-3 text-(--text-color) leading-relaxed">
             Un interruptor limpio que separa de raíz tus finanzas. Genera flujos de caja independientes y calcula tu costo de reposición inflacionario.
           </p>
@@ -123,12 +123,12 @@
       </div>
       
       <!-- Block 3 -->
-      <div class="flex flex-col md:flex-row items-center gap-8 bg-(--surface-color) p-8 md:p-10 rounded-2xl border border-(--switch-border)">
-        <div class="w-16 h-16 rounded-2xl bg-(--accent-color)/10 flex items-center justify-center shrink-0">
-          <lucide-icon [img]="ActivityIcon" class="text-(--accent-color) w-8 h-8"></lucide-icon>
+      <div class="flex flex-col md:flex-row items-center gap-6 sm:gap-8 bg-(--surface-color) p-6 sm:p-8 md:p-10 rounded-2xl border border-(--switch-border)">
+        <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-(--accent-color)/10 flex items-center justify-center shrink-0">
+          <lucide-icon [img]="ActivityIcon" class="text-(--accent-color) w-7 h-7 sm:w-8 sm:h-8"></lucide-icon>
         </div>
         <div>
-          <h3 class="rubik-title text-2xl font-bold mb-3 text-(--text-color)">Radar de Capacidad de Endeudamiento</h3>
+          <h3 class="rubik-title text-xl sm:text-2xl font-bold mb-2 sm:mb-3 text-(--text-color)">Radar de Capacidad de Endeudamiento</h3>
           <p class="opacity-80 mb-3 text-(--text-color) leading-relaxed">
             ¿Quieres comprar a plazos? Nuestro módulo centraliza todas tus cuotas y calcula su impacto real en tu flujo de caja.
           </p>
@@ -145,52 +145,52 @@
 <!-- ========================================== -->
 <!-- 4. PRICING & FINAL CTA SECTION             -->
 <!-- ========================================== -->
-<section class="py-20 px-6 bg-(--surface-color)">
+<section class="py-12 sm:py-20 px-4 sm:px-6 lg:px-8 bg-(--surface-color)">
   <div class="max-w-5xl mx-auto text-center">
-    <h2 class="rubik-title text-3xl md:text-4xl font-bold mb-6 text-(--text-color)">
+    <h2 class="rubik-title text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6 text-(--text-color)">
       Empieza gratis. Ahórrate el 15% de tus ingresos desde el día uno.
     </h2>
-    <p class="text-lg opacity-80 mb-12 max-w-2xl mx-auto text-(--text-color)">
+    <p class="text-base sm:text-lg opacity-80 mb-8 sm:mb-12 max-w-2xl mx-auto text-(--text-color)">
       Nuestra versión <strong>Gratuita</strong> incluye todo lo que necesitas para ordenar tu caos y ver tu patrimonio en USD. 
       ¿Quieres automatizar la lectura de Pago Móvil y evaluar créditos en segundos?
     </p>
     
-    <div class="flex flex-col md:flex-row gap-8 justify-center items-stretch mb-12">
+    <div class="flex flex-col sm:flex-row gap-6 sm:gap-8 justify-center items-stretch mb-8 sm:mb-12">
       <!-- Free Plan -->
-      <div class="p-8 rounded-2xl border-2 border-(--switch-border) bg-(--bg-color) w-full max-w-sm text-left flex flex-col">
-        <h3 class="rubik-title text-2xl font-bold mb-2 text-(--text-color)">Plan Free</h3>
-        <p class="text-4xl font-bold text-(--text-color) mb-6">$0 <span class="text-sm opacity-60 font-normal">/ siempre</span></p>
+      <div class="p-6 sm:p-8 rounded-2xl border-2 border-(--switch-border) bg-(--bg-color) w-full max-w-sm text-left flex flex-col">
+        <h3 class="rubik-title text-xl sm:text-2xl font-bold mb-2 text-(--text-color)">Plan Free</h3>
+        <p class="text-3xl sm:text-4xl font-bold text-(--text-color) mb-6">$0 <span class="text-sm opacity-60 font-normal">/ siempre</span></p>
         <ul class="space-y-3 text-sm opacity-80 text-(--text-color) mb-8 grow">
           <li class="flex items-start gap-2">✓ <span>Registro manual de movimientos</span></li>
           <li class="flex items-start gap-2">✓ <span>Tasa BCV automática diaria</span></li>
           <li class="flex items-start gap-2">✓ <span>Switch Personal / Negocio</span></li>
           <li class="flex items-start gap-2">✓ <span>Planes de ahorro visuales</span></li>
         </ul>
-        <button routerLink="/auth/login" class="w-full py-3 px-6 rounded-[0.8rem] border border-(--switch-border) text-(--text-color) font-medium hover:border-(--accent-color) hover:text-(--accent-color) transition-all">
+        <button routerLink="/auth/login" class="w-full py-3 px-6 rounded-[0.8rem] border border-(--switch-border) text-(--text-color) font-medium hover:border-(--accent-color) hover:text-(--accent-color) transition-all min-h-[48px]">
           Empezar Gratis
         </button>
       </div>
       
       <!-- Premium Plan -->
-      <div class="p-8 rounded-2xl border-2 border-(--accent-color) bg-(--bg-color) w-full max-w-sm text-left flex flex-col relative shadow-xl">
+      <div class="p-6 sm:p-8 rounded-2xl border-2 border-(--accent-color) bg-(--bg-color) w-full max-w-sm text-left flex flex-col relative shadow-xl">
         <span class="absolute -top-4 left-1/2 -translate-x-1/2 bg-(--accent-color) text-(--accent-contrast) text-xs font-bold px-4 py-1.5 rounded-full shadow-md">
           MÁS POPULAR
         </span>
-        <h3 class="rubik-title text-2xl font-bold mb-2 text-(--text-color)">Plan Premium</h3>
-        <p class="text-4xl font-bold text-(--text-color) mb-6">$3 <span class="text-sm opacity-60 font-normal text-(--text-color)">/ mes</span></p>
+        <h3 class="rubik-title text-xl sm:text-2xl font-bold mb-2 text-(--text-color)">Plan Premium</h3>
+        <p class="text-3xl sm:text-4xl font-bold text-(--text-color) mb-6">$3 <span class="text-sm opacity-60 font-normal text-(--text-color)">/ mes</span></p>
         <ul class="space-y-3 text-sm opacity-90 text-(--text-color) mb-8 grow">
           <li class="flex items-start gap-2">✓ <span><strong>Lectura de capturas (OCR)</strong></span></li>
           <li class="flex items-start gap-2">✓ <span><strong>Costo de reposición inflacionario</strong></span></li>
           <li class="flex items-start gap-2">✓ <span><strong>Evaluador Cashea / Krece</strong></span></li>
           <li class="flex items-start gap-2">✓ <span>Alertas de devaluación proactivas</span></li>
         </ul>
-        <button routerLink="/auth/login" class="btn-primary w-full py-3 px-6 text-base">
+        <button routerLink="/auth/login" class="btn-primary w-full py-3 px-6 text-base min-h-[48px]">
           Desbloquear Premium
         </button>
       </div>
     </div>
     
-    <p class="text-sm opacity-60 text-(--text-color)">
+    <p class="text-xs sm:text-sm opacity-60 text-(--text-color)">
       ¿Tienes dudas? <a routerLink="/contact" class="text-(--accent-color) font-semibold hover:underline">Contáctanos aquí</a>
     </p>
   </div>

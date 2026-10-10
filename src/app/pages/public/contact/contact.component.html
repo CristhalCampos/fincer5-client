@@ -1,24 +1,24 @@
 <!-- ========================================== -->
 <!-- CONTACT PAGE                               -->
 <!-- ========================================== -->
-<div class="max-w-6xl mx-auto py-16 px-6">
+<div class="max-w-6xl mx-auto py-10 sm:py-16 px-4 sm:px-6 lg:px-8">
   
   <!-- Header -->
-  <div class="text-center mb-12">
-    <h1 class="rubik-title text-4xl md:text-5xl font-bold mb-4 text-(--text-color)">
+  <div class="text-center mb-8 sm:mb-12">
+    <h1 class="rubik-title text-3xl sm:text-4xl md:text-5xl font-bold mb-4 text-(--text-color)">
       Hablemos. <span class="text-(--accent-color)">Estamos aquí para ayudarte.</span>
     </h1>
-    <p class="text-lg opacity-80 max-w-2xl mx-auto text-(--text-color)">
+    <p class="text-base sm:text-lg opacity-80 max-w-2xl mx-auto text-(--text-color)">
       ¿Tienes dudas sobre cómo funciona fincer5? ¿Encontraste un error o tienes una sugerencia para mejorar la app? Nuestro equipo está listo para escucharte.
     </p>
   </div>
 
   <!-- Grid 2 columnas -->
-  <div class="grid md:grid-cols-2 gap-12 items-start">
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-start">
     
     <!-- Columna Izquierda: Formulario -->
-    <div class="bg-(--surface-color) p-10 rounded-3xl shadow-2xl border border-(--switch-border)">
-      <h2 class="text-2xl font-bold mb-6 text-(--text-color)">Envíanos un mensaje</h2>
+    <div class="bg-(--surface-color) p-6 sm:p-10 rounded-2xl sm:rounded-3xl shadow-2xl border border-(--switch-border)">
+      <h2 class="text-xl sm:text-2xl font-bold mb-6 text-(--text-color)">Envíanos un mensaje</h2>
       
       <form class="space-y-4">
         <!-- Nombre -->
@@ -27,7 +27,7 @@
           <input 
             type="text" 
             placeholder="Tu nombre" 
-            class="w-full p-3 rounded-lg bg-(--bg-color) border border-(--switch-border) focus:border-(--accent-color) outline-none transition-all text-(--text-color) placeholder:opacity-50"
+            class="w-full p-3 rounded-lg bg-(--bg-color) border border-(--switch-border) focus:border-(--accent-color) outline-none transition-all text-(--text-color) placeholder:opacity-50 min-h-[44px]"
           >
         </div>
 
@@ -37,7 +37,7 @@
           <input 
             type="email" 
             placeholder="tu@email.com" 
-            class="w-full p-3 rounded-lg bg-(--bg-color) border border-(--switch-border) focus:border-(--accent-color) outline-none transition-all text-(--text-color) placeholder:opacity-50"
+            class="w-full p-3 rounded-lg bg-(--bg-color) border border-(--switch-border) focus:border-(--accent-color) outline-none transition-all text-(--text-color) placeholder:opacity-50 min-h-[44px]"
           >
         </div>
 
@@ -45,7 +45,7 @@
         <div>
           <label class="block text-sm font-medium mb-2 text-(--text-color)">Motivo de contacto</label>
           <select 
-            class="w-full p-3 rounded-lg bg-(--bg-color) border border-(--switch-border) focus:border-(--accent-color) outline-none transition-all text-(--text-color)"
+            class="w-full p-3 rounded-lg bg-(--bg-color) border border-(--switch-border) focus:border-(--accent-color) outline-none transition-all text-(--text-color) min-h-[44px]"
           >
             <option value="">Selecciona una opción</option>
             <option value="soporte">Soporte técnico</option>
@@ -62,12 +62,12 @@
           <textarea 
             placeholder="Cuéntanos en qué podemos ayudarte..." 
             rows="5" 
-            class="w-full p-3 rounded-lg bg-(--bg-color) border border-(--switch-border) focus:border-(--accent-color) outline-none transition-all text-(--text-color) placeholder:opacity-50 resize-none"
+            class="w-full p-3 rounded-lg bg-(--bg-color) border border-(--switch-border) focus:border-(--accent-color) outline-none transition-all text-(--text-color) placeholder:opacity-50 resize-none min-h-[120px]"
           ></textarea>
         </div>
 
         <!-- Botón -->
-        <button type="submit" class="btn-primary w-full py-3 mt-4 text-base">
+        <button type="submit" class="btn-primary w-full py-3 mt-4 text-base min-h-[48px]">
           Enviar mensaje
         </button>
 
@@ -79,14 +79,14 @@
     </div>
 
     <!-- Columna Derecha: Información -->
-    <div class="space-y-8">
+    <div class="space-y-6 sm:space-y-8">
       
       <!-- Email directo -->
-      <div class="flex items-start gap-4">
-        <div class="w-12 h-12 rounded-xl bg-(--accent-color) flex items-center justify-center shrink-0">
-          <lucide-icon [img]="MailIcon" class="text-(--accent-contrast) w-6 h-6"></lucide-icon>
+      <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+        <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-(--accent-color) flex items-center justify-center shrink-0">
+          <lucide-icon [img]="MailIcon" class="text-(--accent-contrast) w-5 h-5 sm:w-6 sm:h-6"></lucide-icon>
         </div>
-        <div>
+        <div class="text-center sm:text-left">
           <h3 class="font-bold text-lg mb-1 text-(--text-color)">Escríbenos directamente</h3>
           <a href="mailto:info@fincer5.com" class="text-(--accent-color) hover:underline font-medium">
             info@fincer5.com
@@ -98,11 +98,11 @@
       </div>
 
       <!-- Tiempo de respuesta -->
-      <div class="flex items-start gap-4">
-        <div class="w-12 h-12 rounded-xl bg-(--accent-color) flex items-center justify-center shrink-0">
-          <lucide-icon [img]="ClockIcon" class="text-(--accent-contrast) w-6 h-6"></lucide-icon>
+      <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+        <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-(--accent-color) flex items-center justify-center shrink-0">
+          <lucide-icon [img]="ClockIcon" class="text-(--accent-contrast) w-5 h-5 sm:w-6 sm:h-6"></lucide-icon>
         </div>
-        <div>
+        <div class="text-center sm:text-left">
           <h3 class="font-bold text-lg mb-1 text-(--text-color)">Tiempo de respuesta</h3>
           <p class="opacity-80 text-(--text-color)">
             Nos comprometemos a responder todas las consultas en menos de 24 horas hábiles.
@@ -111,9 +111,9 @@
       </div>
 
       <!-- Mensaje de marca -->
-      <div class="bg-(--surface-color) p-8 rounded-2xl border border-(--switch-border) mt-8">
-        <div class="flex items-center gap-3 mb-4">
-          <lucide-icon [img]="MapPinIcon" class="text-(--accent-color) w-5 h-5"></lucide-icon>
+      <div class="bg-(--surface-color) p-6 sm:p-8 rounded-2xl border border-(--switch-border) mt-4">
+        <div class="flex flex-col sm:flex-row items-center gap-3 mb-4">
+          <lucide-icon [img]="MapPinIcon" class="text-(--accent-color) w-5 h-5 shrink-0"></lucide-icon>
           <h3 class="font-bold text-lg text-(--text-color)">Hecho en Venezuela</h3>
         </div>
         <p class="opacity-80 text-(--text-color) leading-relaxed">
