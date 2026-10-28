@@ -1,0 +1,393 @@
+<div class="min-h-screen bg-gray-50 py-12">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold text-gray-900 flex items-center gap-3">
+        <lucide-angular [img]="ShieldIcon" class="h-8 w-8 text-primary-600"></lucide-angular>
+        Suscripción
+      </h1>
+      <p class="mt-2 text-gray-600">Gestiona tu plan y desbloquea todas las funcionalidades Premium</p>
+    </div>
+
+    @if (isLoading()) {
+      <div class="flex justify-center py-12">
+        <lucide-angular [img]="LoaderIcon" class="h-8 w-8 animate-spin text-primary-600"></lucide-angular>
+      </div>
+    } @else {
+      <!-- Alertas -->
+      @if (error()) {
+        <div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center gap-3 text-red-800" role="alert">
+          <lucide-angular [img]="AlertCircleIcon" class="h-5 w-5 flex-shrink-0"></lucide-angular>
+          <span>{{ error() }}</span>
+        </div>
+      }
+      @if (success()) {
+        <div class="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex items-center gap-3 text-green-800" role="alert">
+          <lucide-angular [img]="CheckCircleIcon" class="h-5 w-5 flex-shrink-0"></lucide-angular>
+          <span>{{ success() }}</span>
+        </div>
+      }
+
+      <!-- Suscripción Actual -->
+      <section class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-900 mb-4">Tu Plan Actual</h2>
+        
+        @if (currentSubscription()) {
+          <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+            <div class="p-6 md:p-8" [class]="isPremium() ? 'bg-gradient-to-r from-yellow-50 to-orange-50 border-b border-yellow-200' : 'bg-gray-50 border-b border-gray-200'">
+              <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div class="flex items-center gap-4">
+                  <div class="p-3 rounded-xl" [class]="isPremium() ? 'bg-yellow-100' : 'bg-gray-100'">
+                    <lucide-angular 
+                      [img]="getStatusIcon(currentSubscription()!.status)" 
+                      class="h-6 w-6" 
+                      [class]="isPremium() ? 'text-yellow-600' : 'text-gray-600'">
+                    </lucide-angular>
+                  </div>
+                  <div>
+                    <h3 class="text-2xl font-bold text-gray-900">
+                      {{ subscriptionService.getPlanDisplayName(currentPlan()!) }}
+                      @if (isPremium()) {
+                        <lucide-angular [img]="CrownIcon" class="h-5 w-5 inline-block text-yellow-500 ml-2"></lucide-angular>
+                      }
+                    </h3>
+                    <p class="text-gray-600 mt-1">
+                      {{ subscriptionService.getSubscriptionStatusLabel(currentSubscription()!.status) }}
+                    </p>
+                  </div>
+                </div>
+                
+                <div class="flex items-center gap-4 flex-wrap">
+                  <span 
+                    class="px-4 py-2 rounded-full text-sm font-medium"
+                    [class]="getStatusBadgeClass(currentSubscription()!.status)"
+                  >
+                    <lucide-angular [img]="getStatusIcon(currentSubscription()!.status)" class="h-4 w-4 inline-block mr-1"></lucide-angular>
+                    {{ currentSubscription()!.status }}
+                  </span>
+                  
+                  @if (currentSubscription()!.endDate) {
+                    <div class="flex items-center gap-2 text-sm text-gray-600 bg-white/50 px-3 py-2 rounded-lg">
+                      <lucide-angular [img]="CalendarIcon" class="h-4 w-4"></lucide-angular>
+                      <span>Renueva el {{ formatDate(currentSubscription()!.endDate) }}</span>
+                      @if (daysUntilExpiration() !== null && daysUntilExpiration()! <= 30) {
+                        <span class="ml-2 px-2 py-0.5 text-xs rounded" [class]="daysUntilExpiration()! <= 7 ? 'bg-red-100 text-red-700' : 'bg-yellow-100 text-yellow-700'">
+                          {{ daysUntilExpiration() }} días
+                        </span>
+                      }
+                    </div>
+                  }
+                </div>
+              </div>
+            </div>
+
+            <!-- Detalles del plan -->
+            <div class="p-6 md:p-8">
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <div>
+                  <p class="text-sm text-gray-500">Fecha de inicio</p>
+                  <p class="font-medium text-gray-900">{{ formatDate(currentSubscription()!.startDate) }}</p>
+                </div>
+                @if (currentSubscription()!.endDate) {
+                  <div>
+                    <p class="text-sm text-gray-500">Fecha de fin</p>
+                    <p class="font-medium text-gray-900">{{ formatDate(currentSubscription()!.endDate) }}</p>
+                  </div>
+                }
+                @if (currentSubscription()!.trialEndsAt) {
+                  <div>
+                    <p class="text-sm text-gray-500">Fin de prueba</p>
+                    <p class="font-medium text-gray-900">{{ formatDate(currentSubscription()!.trialEndsAt) }}</p>
+                  </div>
+                }
+                @if (currentSubscription()!.canceledAt) {
+                  <div class="md:col-span-3 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                    <p class="text-yellow-800">
+                      <strong>Suscripción cancelada</strong> el {{ formatDate(currentSubscription()!.canceledAt) }}. 
+                      Mantienes acceso hasta el {{ formatDate(currentSubscription()!.endDate) }}.
+                    </p>
+                  </div>
+                }
+                @if (isPremium() && currentSubscription()!.gracePeriodEndsAt && subscriptionService.isInGracePeriod(currentSubscription()!)) {
+                  <div class="md:col-span-3 p-4 bg-orange-50 border border-orange-200 rounded-lg">
+                    <p class="text-orange-800 font-medium flex items-center gap-2">
+                      <lucide-angular [img]="AlertCircleIcon" class="h-5 w-5"></lucide-angular>
+                      Período de gracia activo
+                    </p>
+                    <p class="text-orange-700 mt-1">Tu pago falló. Tienes hasta el {{ formatDate(currentSubscription()!.gracePeriodEndsAt) }} para regularizar sin perder acceso.</p>
+                  </div>
+                }
+              </div>
+
+              <!-- Features incluidas -->
+              <div>
+                <h4 class="font-medium text-gray-900 mb-3 flex items-center gap-2">
+                  <lucide-angular [img]="CheckCircleIcon" class="h-5 w-5 text-green-500"></lucide-angular>
+                  Funcionalidades incluidas en tu plan:
+                </h4>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  @for (feature of currentPlan()!.features; track feature) {
+                    <div class="flex items-center gap-2 text-sm text-gray-700 bg-green-50 px-3 py-2 rounded-lg">
+                      <lucide-angular [img]="CheckIcon" class="h-4 w-4 text-green-500 flex-shrink-0"></lucide-angular>
+                      {{ feature }}
+                    </div>
+                  }
+                </div>
+              </div>
+
+              <!-- Acciones -->
+              <div class="mt-6 pt-6 border-t border-gray-200 flex flex-wrap gap-3">
+                @if (canUpgrade() && !isPremium()) {
+                  <button
+                    (click)="selectPlan(availablePlans()[0])"
+                    class="px-6 py-3 text-sm font-medium text-white bg-primary-600 rounded-lg hover:bg-primary-700 flex items-center gap-2"
+                  >
+                    <lucide-angular [img]="ArrowRightIcon" class="h-4 w-4"></lucide-angular>
+                    Actualizar a Premium
+                  </button>
+                } @else if (isPremium() && currentSubscription()!.status === 'ACTIVE') {
+                  <button
+                    (click)="cancelSubscription()"
+                    [disabled]="isProcessing()"
+                    class="px-6 py-3 text-sm font-medium text-red-600 bg-red-50 border border-red-200 rounded-lg hover:bg-red-100 disabled:opacity-50 flex items-center gap-2"
+                  >
+                    <lucide-angular [img]="XIcon" class="h-4 w-4"></lucide-angular>
+                    Cancelar suscripción
+                  </button>
+                  <a
+                    href="/dashboard/payment-methods"
+                    class="px-6 py-3 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-2"
+                  >
+                    <lucide-angular [img]="CreditCardIcon" class="h-4 w-4"></lucide-angular>
+                    Gestionar pagos
+                  </a>
+                } @else if (currentSubscription()!.status === 'CANCELED' || currentSubscription()!.status === 'EXPIRED') {
+                  <button
+                    (click)="selectPlan(availablePlans()[0])"
+                    class="px-6 py-3 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 flex items-center gap-2"
+                  >
+                    <lucide-angular [img]="UnlockIcon" class="h-4 w-4"></lucide-angular>
+                    Reactivar Premium
+                  </button>
+                }
+              </div>
+            </div>
+          </div>
+        } @else {
+          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8 text-center">
+            <lucide-angular [img]="ShieldIcon" class="h-12 w-12 mx-auto text-gray-300 mb-4"></lucide-angular>
+            <p class="text-gray-500">No se pudo cargar la información de tu suscripción</p>
+          </div>
+        }
+      </section>
+
+      <!-- Planes Disponibles -->
+      <section class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
+          <lucide-angular [img]="CrownIcon" class="h-6 w-6 text-yellow-500"></lucide-angular>
+          Planes Disponibles
+        </h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          @for (plan of availablePlans(); track plan.id) {
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden relative"
+                 [class]="plan.name.startsWith('PREMIUM') ? 'ring-2 ring-yellow-400' : ''">
+              @if (plan.name.startsWith('PREMIUM')) {
+                <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-yellow-400 to-orange-500"></div>
+                <div class="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-yellow-500 text-white text-xs font-medium rounded-full">
+                  MÁS POPULAR
+                </div>
+              }
+              
+              <div class="p-6">
+                <div class="text-center mb-6">
+                  <h3 class="text-xl font-bold text-gray-900">{{ plan.displayName }}</h3>
+                  <div class="mt-2 flex items-baseline justify-center gap-1">
+                    <span class="text-3xl font-bold text-gray-900">{{ formatPrice(plan.price) }}</span>
+                    <span class="text-gray-500">{{ getBillingCycleLabel(plan.billingCycle) }}</span>
+                  </div>
+                  @if (plan.trialDays > 0) {
+                    <p class="mt-2 text-sm text-green-600 flex items-center justify-center gap-1">
+                      <lucide-angular [img]="ZapIcon" class="h-4 w-4"></lucide-angular>
+                      {{ plan.trialDays }} días de prueba gratis
+                    </p>
+                  }
+                </div>
+
+                <ul class="space-y-3 mb-6">
+                  @for (feature of planFeatures; track feature.name) {
+                    <li class="flex items-start gap-3 text-sm">
+                      @if (feature.included || (feature.premiumOnly && plan.name.startsWith('PREMIUM'))) {
+                        <lucide-angular [img]="CheckIcon" class="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5"></lucide-angular>
+                        <span class="text-gray-700">{{ feature.name }}</span>
+                      } @else {
+                        <lucide-angular [img]="XIcon" class="h-5 w-5 text-gray-300 flex-shrink-0 mt-0.5"></lucide-angular>
+                        <span class="text-gray-400">{{ feature.name }}</span>
+                        @if (feature.premiumOnly) {
+                          <lucide-angular [img]="LockIcon" class="h-3 w-3 text-gray-300 ml-1"></lucide-angular>
+                        }
+                      }
+                    </li>
+                  }
+                </ul>
+              </div>
+              
+              <div class="px-6 pb-6 pt-0">
+                <button
+                  (click)="selectPlan(plan)"
+                  [disabled]="isPremium() && currentPlan()?.id === plan.id"
+                  class="w-full py-3 px-4 rounded-lg font-medium transition-colors flex items-center justify-center gap-2"
+                  [class]="plan.name.startsWith('PREMIUM') 
+                    ? 'bg-yellow-500 text-white hover:bg-yellow-600' 
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'">
+                  @if (isPremium() && currentPlan()?.id === plan.id) {
+                    <lucide-angular [img]="CheckCircleIcon" class="h-4 w-4"></lucide-angular>
+                    <span>Plan actual</span>
+                  } @else if (isPremium()) {
+                    <lucide-angular [img]="ArrowRightIcon" class="h-4 w-4"></lucide-angular>
+                    <span>Cambiar a este plan</span>
+                  } @else {
+                    <lucide-angular [img]="ArrowRightIcon" class="h-4 w-4"></lucide-angular>
+                    <span>Seleccionar</span>
+                  }
+                </button>
+              </div>
+            </div>
+          }
+        </div>
+      </section>
+
+      <!-- Nota sobre pagos manuales -->
+      <section class="bg-blue-50 border border-blue-200 rounded-xl p-6">
+        <div class="flex items-start gap-4">
+          <lucide-angular [img]="AlertCircleIcon" class="h-6 w-6 text-blue-600 flex-shrink-0 mt-0.5"></lucide-angular>
+          <div>
+            <h3 class="font-medium text-blue-900 mb-2">Importante: Pagos Manuales</h3>
+            <p class="text-blue-800 text-sm mb-3">
+              En Fincer5 no hay renovaciones automáticas ni cargos recurrentes. Tú decides cuándo renovar.
+            </p>
+            <ul class="text-blue-800 text-sm space-y-1">
+              <li class="flex items-center gap-2"><lucide-angular [img]="CheckIcon" class="h-4 w-4"></lucide-angular> Eliges el método: Binance (USDT), PayPal o Pago Móvil</li>
+              <li class="flex items-center gap-2"><lucide-angular [img]="CheckIcon" class="h-4 w-4"></lucide-angular> Subes el comprobante y activamos tu plan al instante</li>
+              <li class="flex items-center gap-2"><lucide-angular [img]="CheckIcon" class="h-4 w-4"></lucide-angular> Recibes recordatorios 3 días antes de que expire</li>
+              <li class="flex items-center gap-2"><lucide-angular [img]="CheckIcon" class="h-4 w-4"></lucide-angular> Sin sorpresas: tú controlas cada pago</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    }
+  </div>
+
+  <!-- Modal de Pago -->
+  @if (showPaymentModal() && selectedPlan()) {
+    <div class="fixed inset-0 z-50 overflow-y-auto" role="dialog" aria-modal="true">
+      <div class="flex min-h-full items-center justify-center p-4">
+        <div class="fixed inset-0 bg-black/50 transition-opacity" (click)="closePaymentModal()"></div>
+        
+        <div class="relative bg-white rounded-xl shadow-xl max-w-md w-full p-6">
+          <div class="flex items-center justify-between mb-6">
+            <h3 class="text-lg font-semibold text-gray-900">Confirmar Pago</h3>
+            <button (click)="closePaymentModal()" class="text-gray-400 hover:text-gray-600">
+              <lucide-angular [img]="XIcon" class="h-5 w-5"></lucide-angular>
+            </button>
+          </div>
+
+          <div class="space-y-4">
+            <!-- Resumen del plan -->
+            <div class="bg-gray-50 rounded-lg p-4">
+              <p class="text-sm text-gray-500">Plan seleccionado</p>
+              <p class="font-semibold text-gray-900">{{ selectedPlan()!.displayName }}</p>
+              <p class="text-2xl font-bold text-primary-600 mt-1">{{ formatPrice(selectedPlan()!.price) }}{{ getBillingCycleLabel(selectedPlan()!.billingCycle) }}</p>
+            </div>
+
+            <!-- Método de pago -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Método de pago</label>
+              @if (paymentMethods().length === 0) {
+                <div class="p-4 bg-yellow-50 border border-yellow-200 rounded-lg text-yellow-800 text-sm">
+                  <p class="font-medium">No tienes métodos de pago configurados</p>
+                  <p class="mt-1">Ve a <a href="/dashboard/payment-methods" class="underline hover:text-yellow-700">Métodos de Pago</a> para agregar uno.</p>
+                </div>
+              } @else {
+                <select
+                  [(ngModel)]="selectedPaymentMethodId"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                >
+                  @for (method of paymentMethods(); track method.id) {
+                    <option [value]="method.id">
+                      {{ paymentService.getProviderDisplayName(method.provider) }}
+                      @if (method.externalEmail) { - {{ method.externalEmail }} }
+                      @else if (method.bankName) { - {{ method.bankName }} }
+                      @if (method.isDefault) { (Predeterminado) }
+                    </option>
+                  }
+                </select>
+              }
+            </div>
+
+            <!-- Referencia de pago -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Referencia / Comprobante</label>
+              <input
+                type="text"
+                [(ngModel)]="paymentReference"
+                placeholder="Ej: TXN-123456, ID PayPal, código Pago Móvil..."
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+              >
+              <p class="mt-1 text-xs text-gray-500">Ingresa el ID de transacción, hash de blockchain, código de Pago Móvil o referencia del comprobante.</p>
+            </div>
+
+            <!-- Instrucciones según método -->
+            @if (selectedPaymentMethodId() && paymentMethods().length > 0) {
+              <div class="p-3 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-800">
+                <p class="font-medium mb-1">Instrucciones para {{ paymentService.getProviderDisplayName(paymentMethods().find(m => m.id === selectedPaymentMethodId())?.provider) }}:</p>
+                @if (paymentMethods().find(m => m.id === selectedPaymentMethodId())?.provider === 'BINANCE') {
+                  <ol class="list-decimal list-inside space-y-1">
+                    <li>Envía {{ formatPrice(selectedPlan()!.price) }} USDT a la wallet de Fincer5</li>
+                    <li>Copia el Hash de la transacción (TXID)</li>
+                    <li>Pégalo en el campo "Referencia" arriba</li>
+                  </ol>
+                } @else if (paymentMethods().find(m => m.id === selectedPaymentMethodId())?.provider === 'PAYPAL') {
+                  <ol class="list-decimal list-inside space-y-1">
+                    <li>Realiza el pago en PayPal a la cuenta de Fincer5</li>
+                    <li>Copia el ID de la orden/transacción</li>
+                    <li>Pégalo en el campo "Referencia" arriba</li>
+                  </ol>
+                } @else {
+                  <ol class="list-decimal list-inside space-y-1">
+                    <li>Realiza el Pago Móvil / Transferencia a los datos de Fincer5</li>
+                    <li>Toma captura del comprobante</li>
+                    <li>Ingresa el código de referencia bancario arriba</li>
+                  </ol>
+                }
+              </div>
+            }
+
+            <!-- Botones -->
+            <div class="flex gap-3 pt-4">
+              <button
+                (click)="closePaymentModal()"
+                class="flex-1 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
+              >
+                Cancelar
+              </button>
+              <button
+                (click)="processPayment()"
+                [disabled]="isProcessing() || !selectedPaymentMethodId() || paymentMethods().length === 0"
+                class="flex-1 px-4 py-2 text-sm font-medium text-white bg-primary-600 rounded-lg hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              >
+                @if (isProcessing()) {
+                  <lucide-angular [img]="LoaderIcon" class="h-4 w-4 animate-spin"></lucide-angular>
+                  Procesando...
+                } @else {
+                  <span>Confirmar y Activar</span>
+                  <lucide-angular [img]="ArrowRightIcon" class="h-4 w-4"></lucide-angular>
+                }
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>
