@@ -1,0 +1,40 @@
+/* Account Component Styles */
+:host {
+  display: block;
+}
+
+/* Animaciones suaves */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+section {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Focus visible para accesibilidad */
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Scrollbar personalizado para modales */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a1a1a1;
+}

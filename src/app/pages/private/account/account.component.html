@@ -1,0 +1,352 @@
+<div class="min-h-screen bg-gray-50 py-12">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold text-gray-900">Mi Cuenta</h1>
+      <p class="mt-2 text-gray-600">Gestiona tu perfil, suscripción y métodos de pago</p>
+    </div>
+
+    @if (isLoading()) {
+      <div class="flex justify-center py-12">
+        <lucide-angular [img]="LoaderIcon" class="h-8 w-8 animate-spin text-primary-600"></lucide-angular>
+      </div>
+    } @else {
+      <!-- Alertas -->
+      @if (error()) {
+        <div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center gap-3 text-red-800" role="alert">
+          <lucide-angular [img]="AlertCircleIcon" class="h-5 w-5 shrink-0"></lucide-angular>
+          <span>{{ error() }}</span>
+        </div>
+      }
+      @if (success()) {
+        <div class="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex items-center gap-3 text-green-800" role="alert">
+          <lucide-angular [img]="CheckCircleIcon" class="h-5 w-5 shrink-0"></lucide-angular>
+          <span>{{ success() }}</span>
+        </div>
+      }
+
+      <div class="space-y-6">
+        <!-- Perfil de Usuario -->
+        <section class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-xl font-semibold text-gray-900 flex items-center gap-2">
+              <lucide-angular [img]="UserIcon" class="h-5 w-5 text-primary-600"></lucide-angular>
+              Perfil
+            </h2>
+            <button
+              type="button"
+              (click)="toggleEditMode()"
+              class="text-sm font-medium text-primary-600 hover:text-primary-700 flex items-center gap-1"
+            >
+              @if (editMode()) {
+                <span>Cancelar</span>
+              } @else {
+                <lucide-angular [img]="SettingsIcon" class="h-4 w-4"></lucide-angular>
+                <span>Editar</span>
+              }
+            </button>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Avatar y info básica -->
+            <div class="md:col-span-1 flex flex-col items-center md:items-start text-center md:text-left">
+              <div class="w-24 h-24 rounded-full bg-primary-100 flex items-center justify-center mx-auto md:mx-0 mb-4">
+                <lucide-angular [img]="UserIcon" class="h-12 w-12 text-primary-600"></lucide-angular>
+              </div>
+              <h3 class="text-xl font-semibold text-gray-900">{{ user()?.name || 'Sin nombre' }}</h3>
+              <p class="text-gray-500 mt-1">{{ user()?.email }}</p>
+              
+              <!-- Badge de rol -->
+              <div class="mt-4 flex flex-wrap justify-center md:justify-start gap-2">
+                <span 
+                  class="px-3 py-1 rounded-full text-xs font-medium"
+                  [class]="getRoleBadgeClass(userRole())"
+                >
+                  {{ userRole() }}
+                </span>
+                @if (isPremium()) {
+                  <span class="px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 flex items-center gap-1">
+                    <lucide-angular [img]="ShieldIcon" class="h-3 w-3"></lucide-angular>
+                    Premium Activo
+                  </span>
+                }
+              </div>
+            </div>
+
+            <!-- Formulario editable -->
+            <div class="md:col-span-1 space-y-4">
+              @if (editMode()) {
+                <form (ngSubmit)="saveProfile()" class="space-y-4">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Nombre completo</label>
+                    <input
+                      type="text"
+                      [(ngModel)]="formData().name"
+                      name="name"
+                      class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                      placeholder="Tu nombre"
+                    >
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Moneda de visualización</label>
+                    <select
+                      [(ngModel)]="formData().displayCurrency"
+                      name="displayCurrency"
+                      class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    >
+                      <option value="USD">USD (Dólares)</option>
+                      <option value="VES">VES (Bolívares)</option>
+                    </select>
+                  </div>
+                  <div class="flex justify-end gap-3 pt-4">
+                    <button
+                      type="button"
+                      (click)="toggleEditMode()"
+                      class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
+                    >
+                      Cancelar
+                    </button>
+                    <button
+                      type="submit"
+                      [disabled]="isSaving()"
+                      class="px-4 py-2 text-sm font-medium text-white bg-primary-600 rounded-lg hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                    >
+                      @if (isSaving()) {
+                        <lucide-angular [img]="LoaderIcon" class="h-4 w-4 animate-spin"></lucide-angular>
+                        Guardando...
+                      } @else {
+                        <span>Guardar cambios</span>
+                      }
+                    </button>
+                  </div>
+                </form>
+              } @else {
+                <div class="space-y-4">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-500 mb-1">Nombre completo</label>
+                    <p class="text-gray-900">{{ user()?.name || 'No configurado' }}</p>
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-500 mb-1">Moneda de visualización</label>
+                    <p class="text-gray-900">{{ formData().displayCurrency === 'USD' ? 'USD (Dólares)' : 'VES (Bolívares)' }}</p>
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-500 mb-1">Tipo de cuenta</label>
+                    <p class="text-gray-900 capitalize">{{ user()?.accountType?.toLowerCase() || 'No configurado' }}</p>
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-500 mb-1">Proveedor de autenticación</label>
+                    <p class="text-gray-900 capitalize">{{ user()?.provider?.toLowerCase() || 'local' }}</p>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        </section>
+
+        <!-- Suscripción -->
+        <section class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-xl font-semibold text-gray-900 flex items-center gap-2">
+              <lucide-angular [img]="ShieldIcon" class="h-5 w-5 text-primary-600"></lucide-angular>
+              Suscripción
+            </h2>
+            <button
+              type="button"
+              (click)="navigateToSubscription()"
+              class="text-sm font-medium text-primary-600 hover:text-primary-700 flex items-center gap-1"
+            >
+              Gestionar
+              <lucide-angular [img]="SettingsIcon" class="h-4 w-4"></lucide-angular>
+            </button>
+          </div>
+
+          @if (subscription()) {
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div class="md:col-span-2 space-y-4">
+                <div class="flex items-center gap-3 p-4 bg-gray-50 rounded-lg">
+                  <div class="p-3 rounded-lg" [class]="isPremium() ? 'bg-yellow-100' : 'bg-gray-100'">
+                    <lucide-angular [img]="ShieldIcon" class="h-6 w-6" [class]="isPremium() ? 'text-yellow-600' : 'text-gray-600'"></lucide-angular>
+                  </div>
+                  <div>
+                    <h3 class="font-semibold text-gray-900">
+                      {{ subscriptionService.getPlanDisplayName(subscription()!.plan) }}
+                    </h3>
+                    <p class="text-sm text-gray-500">
+                      {{ subscriptionService.getSubscriptionStatusLabel(subscriptionStatus()) }}
+                    </p>
+                  </div>
+                  <span 
+                    class="ml-auto px-3 py-1 rounded-full text-xs font-medium"
+                    [class]="getStatusBadgeClass(subscriptionStatus())"
+                  >
+                    {{ subscriptionStatus() }}
+                  </span>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm">
+                  <div>
+                    <p class="text-gray-500">Inicio</p>
+                    <p class="font-medium text-gray-900">{{ formatDate(subscription()!.startDate) }}</p>
+                  </div>
+                  @if (subscription()!.endDate) {
+                    <div>
+                      <p class="text-gray-500">Fin</p>
+                      <p class="font-medium text-gray-900">{{ formatDate(subscription()!.endDate) }}</p>
+                    </div>
+                    <div>
+                      <p class="text-gray-500">Días restantes</p>
+                      <p class="font-medium text-gray-900" [class]="daysUntilExpiration()! <= 7 ? 'text-red-600' : 'text-green-600'">
+                        {{ daysUntilExpiration() }} días
+                      </p>
+                    </div>
+                  } @else {
+                    <div class="col-span-2">
+                      <p class="text-gray-500">Plan gratuito</p>
+                      <p class="font-medium text-green-600">Sin fecha de expiración</p>
+                    </div>
+                  }
+                  @if (subscription()!.trialEndsAt) {
+                    <div class="col-span-2">
+                      <p class="text-gray-500">Fin del período de prueba</p>
+                      <p class="font-medium text-gray-900">{{ formatDate(subscription()!.trialEndsAt) }}</p>
+                    </div>
+                  }
+                </div>
+
+                @if (subscription()!.canceledAt) {
+                  <div class="p-3 bg-yellow-50 border border-yellow-200 rounded-lg text-sm text-yellow-800">
+                    <p>Suscripción cancelada el {{ formatDate(subscription()!.canceledAt) }}. Tendrás acceso hasta el {{ formatDate(subscription()!.endDate) }}.</p>
+                  </div>
+                }
+                @if (isPremium() && subscription()!.gracePeriodEndsAt && subscriptionService.isInGracePeriod(subscription()!)) {
+                  <div class="p-3 bg-orange-50 border border-orange-200 rounded-lg text-sm text-orange-800">
+                    <p class="font-medium">⚠️ Período de gracia activo</p>
+                    <p>Tu pago falló. Tienes hasta el {{ formatDate(subscription()!.gracePeriodEndsAt) }} para regularizar tu suscripción sin perder acceso.</p>
+                  </div>
+                }
+              </div>
+
+              <!-- Features del plan -->
+              <div class="md:col-span-1">
+                <h4 class="font-medium text-gray-900 mb-3">Incluye:</h4>
+                <ul class="space-y-2 text-sm text-gray-600">
+                  @for (feature of subscription()!.plan.features; track feature) {
+                    <li class="flex items-center gap-2">
+                      <lucide-angular [img]="CheckCircleIcon" class="h-4 w-4 text-green-500"></lucide-angular>
+                      {{ feature }}
+                    </li>
+                  }
+                </ul>
+              </div>
+            </div>
+          } @else {
+            <div class="text-center py-8 text-gray-500">
+              <lucide-angular [img]="ShieldIcon" class="h-12 w-12 mx-auto text-gray-300 mb-4"></lucide-angular>
+              <p>No se pudo cargar la información de suscripción</p>
+            </div>
+          }
+        </section>
+
+        <!-- Métodos de Pago -->
+        <section class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-xl font-semibold text-gray-900 flex items-center gap-2">
+              <lucide-angular [img]="CreditCardIcon" class="h-5 w-5 text-primary-600"></lucide-angular>
+              Métodos de Pago
+            </h2>
+            <button
+              type="button"
+              (click)="navigateToPaymentMethods()"
+              class="text-sm font-medium text-primary-600 hover:text-primary-700 flex items-center gap-1"
+            >
+              Gestionar
+              <lucide-angular [img]="SettingsIcon" class="h-4 w-4"></lucide-angular>
+            </button>
+          </div>
+
+          @if (paymentMethods().length > 0) {
+            <div class="space-y-3">
+              @for (method of paymentMethods(); track method.id) {
+                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-200">
+                  <div class="flex items-center gap-4">
+                    <div class="p-2 rounded-lg" [class]="method.provider === 'BINANCE' ? 'bg-yellow-100' : method.provider === 'PAYPAL' ? 'bg-blue-100' : 'bg-green-100'">
+                      <lucide-angular [img]="CreditCardIcon" class="h-5 w-5" [class]="method.provider === 'BINANCE' ? 'text-yellow-600' : method.provider === 'PAYPAL' ? 'text-blue-600' : 'text-green-600'"></lucide-angular>
+                    </div>
+                    <div>
+                      <p class="font-medium text-gray-900">{{ paymentService.getProviderDisplayName(method.provider) }}</p>
+                      <p class="text-sm text-gray-500">
+                        @if (method.externalEmail) {
+                          {{ method.externalEmail }}
+                        } @else if (method.bankName) {
+                          {{ method.bankName }} - {{ method.phoneNumber }}
+                        } @else {
+                          Método configurado
+                        }
+                      </p>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-3">
+                    @if (method.isDefault) {
+                      <span class="px-2 py-1 text-xs font-medium bg-primary-100 text-primary-800 rounded-full">Predeterminado</span>
+                    } @else {
+                      <button
+                        type="button"
+                        (click)="paymentService.setDefaultPaymentMethod(method.id).subscribe()"
+                        class="text-sm text-primary-600 hover:text-primary-700"
+                      >
+                        Establecer como predeterminado
+                      </button>
+                    }
+                    <button
+                      type="button"
+                      (click)="paymentService.deletePaymentMethod(method.id).subscribe()"
+                      class="text-sm text-red-600 hover:text-red-700"
+                      [disabled]="paymentMethods().length === 1"
+                    >
+                      Eliminar
+                    </button>
+                  </div>
+                </div>
+              }
+            </div>
+          } @else {
+            <div class="text-center py-8">
+              <lucide-angular [img]="CreditCardIcon" class="h-12 w-12 mx-auto text-gray-300 mb-4"></lucide-angular>
+              <p class="text-gray-500 mb-4">No tienes métodos de pago configurados</p>
+              <button
+                type="button"
+                (click)="navigateToPaymentMethods()"
+                class="px-4 py-2 text-sm font-medium text-white bg-primary-600 rounded-lg hover:bg-primary-700"
+              >
+                Agregar método de pago
+              </button>
+            </div>
+          }
+        </section>
+
+        <!-- Zona de Peligro -->
+        <section class="bg-white rounded-xl shadow-sm border border-red-200 p-6">
+          <h2 class="text-xl font-semibold text-gray-900 flex items-center gap-2 mb-4">
+            <lucide-angular [img]="AlertCircleIcon" class="h-5 w-5 text-red-600"></lucide-angular>
+            Zona de Peligro
+          </h2>
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="font-medium text-gray-900">Cerrar sesión</p>
+              <p class="text-sm text-gray-500">Cerrar sesión en este dispositivo</p>
+            </div>
+            <button
+              type="button"
+              (click)="logout()"
+              class="px-4 py-2 text-sm font-medium text-red-600 bg-red-50 border border-red-200 rounded-lg hover:bg-red-100 flex items-center gap-2"
+            >
+              <lucide-angular [img]="LogOutIcon" class="h-4 w-4"></lucide-angular>
+              Cerrar sesión
+            </button>
+          </div>
+        </section>
+      </div>
+    }
+  </div>
+</div>
