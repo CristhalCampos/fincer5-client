@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
+import { OnboardingRequest } from '../../../core/models';
 import {
   LucideAngularModule,
   UserIcon,
@@ -198,7 +199,7 @@ export class OnboardingComponent {
     // Eliminamos la clave temporal 'incomeType' antes de enviar al backend
     const { incomeType, ...finalResponses } = this.responses;
 
-    this.authService.completeOnboarding(finalResponses).subscribe({
+    this.authService.completeOnboarding(finalResponses as OnboardingRequest).subscribe({
       next: (res) => {
         console.log('Configuración guardada exitosamente:', res);
         this.isLoading = false;

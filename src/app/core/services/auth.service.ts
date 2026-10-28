@@ -1,33 +1,26 @@
 import { Injectable, signal, computed, effect } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap, catchError, of, BehaviorSubject, from, switchMap, map } from 'rxjs';
+import { Observable, tap, catchError, of, BehaviorSubject, switchMap } from 'rxjs';
 import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
-import { toObservable } from '@angular/core/rxjs-interop';
 
-export interface UserPreferences {
-  displayCurrency: 'USD' | 'VES';
-  hasRecurringExpenses: boolean;
-  hasFixedIncome: boolean;
-  hasSavingsGoals: boolean;
-  hasFreelanceIncome: boolean;
-  hasClientInvoices: boolean;
-  hasProviders?: boolean;
-}
-
-export interface User {
-  id: string;
-  email: string;
-  name?: string;
-  accountType?: 'PERSONAL' | 'PROFESSIONAL' | 'COMBINED';
-  isConfigured: boolean;
-  preferences?: UserPreferences;
-}
-
-export interface AuthResponse {
-  accessToken: string;
-  user: User;
-}
+// --- MODELOS COMPARTIDOS ---
+import {
+  User,
+  UserPreferences,
+  AuthResponse,
+  OnboardingRequest,
+  GoogleLoginRequest,
+  OnboardingResponse,
+  UserRole,
+  AccountType,
+  Subscription,
+  Plan,
+  PaymentMethod,
+  SubscriptionStatus,
+  PaymentProvider,
+  SubscriptionRenewal,
+} from '../models';
 
 @Injectable({
   providedIn: 'root'
@@ -35,22 +28,22 @@ export interface AuthResponse {
 export class AuthService {
   private apiUrl = `${environment.apiUrl}/auth`;
   
-  // ✅ SIGNALS: Estado reactivo moderno
+  // SIGNALS: Estado reactivo moderno
   private accessToken = signal<string | null>(null);
   private currentUser = signal<User | null>(null);
-  private isRestoringSession = signal(true); // Para saber si estamos restaurando sesión
+  private isRestoringSession = signal(true);
   
-  // Computed signals (se actualizan automáticamente)
+  // Computed signals
   public isLoggedIn = computed(() => this.currentUser() !== null);
   public isConfigured = computed(() => this.currentUser()?.isConfigured ?? false);
   public restoringSession = computed(() => this.isRestoringSession());
 
-  // ✅ GETTER PÚBLICO para currentUser (necesario para el guard)
+  // Getter público para el guard
   get currentUserSignal() {
     return this.currentUser;
   }
 
-  // ✅ REAL OBSERVABLE: Para compatibilidad con async pipe y RxJS
+  // REAL OBSERVABLE: Para compatibilidad con async pipe
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
 
@@ -60,18 +53,16 @@ export class AuthService {
       this.currentUserSubject.next(this.currentUser());
     });
     
+    // Iniciar verificación de sesión al arrancar el servicio
     this.checkSessionOnStart().subscribe();
   }
 
-  // Petición inicial para recuperar el accessToken si la pestaña se recargó
-  checkSessionOnStart(): Observable<any> {
+  // 0. Verificación inicial de sesión
+  checkSessionOnStart(): Observable<AuthResponse | null> {
     return this.refreshToken().pipe(
-      tap(() => {
-        this.isRestoringSession.set(false);
-      }),
+      tap(() => this.isRestoringSession.set(false)),
       catchError(() => {
-        this.accessToken.set(null);
-        this.currentUser.set(null);
+        this.clearSession();
         this.isRestoringSession.set(false);
         return of(null);
       })
@@ -93,30 +84,27 @@ export class AuthService {
   }
 
   // 3. Iniciar sesión con Google
-  loginWithGoogle(googleData: any): Observable<AuthResponse> {
+  loginWithGoogle(googleData: GoogleLoginRequest): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(
       `${this.apiUrl}/google`,
-      { ...googleData, userAgent: navigator.userAgent },
+      googleData,
       { withCredentials: true }
     ).pipe(tap(res => this.handleAuthentication(res)));
   }
 
   // 4. Completar el onboarding
-  completeOnboarding(onboardingData: any): Observable<any> {
-    return this.http.post<any>(
+  completeOnboarding(onboardingData: OnboardingRequest): Observable<User> {
+    return this.http.post<OnboardingResponse>(
       `${this.apiUrl}/complete-onboarding`,
       onboardingData,
       { withCredentials: true }
     ).pipe(
+      // switchMap para obtener el perfil fresco y actualizado
       switchMap(() => {
-        // ✅ ACTUALIZAR USER SIGNAL: Refrescar perfil después de onboarding
         return this.getProfile().pipe(
           tap(user => {
-            // Actualizar signal con datos frescos del backend
-            const currentUser = this.currentUser();
-            if (currentUser) {
-              this.currentUser.set({ ...currentUser, ...user, isConfigured: true });
-            }
+            // Aseguramos que isConfigured esté en true tras el onboarding exitoso
+            this.currentUser.set({ ...user, isConfigured: true });
           })
         );
       })
@@ -128,7 +116,7 @@ export class AuthService {
     return this.http.get<User>(`${this.apiUrl}/me`, { withCredentials: true });
   }
 
-  // 6. Renovación del token (Petición silenciosa)
+  // 6. Renovación del token
   refreshToken(): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(
       `${this.apiUrl}/refresh`,
@@ -142,35 +130,168 @@ export class AuthService {
     );
   }
 
-  // Forzar actualización del usuario (útil después de cambios en preferencias)
+  // 7. Forzar actualización del usuario
   refreshUserProfile(): Observable<User> {
     return this.getProfile().pipe(
-      tap(user => {
-        this.currentUser.set(user);
+      tap(user => this.currentUser.set(user))
+    );
+  }
+
+  // 8. Cerrar sesión
+  logout(): Observable<void> {
+    this.clearSession();
+    
+    return this.http.post<void>(`${this.apiUrl}/logout`, {}, { withCredentials: true }).pipe(
+      tap(() => this.router.navigate(['/auth/login'])),
+      catchError(() => {
+        this.router.navigate(['/auth/login']);
+        return of(undefined);
       })
     );
   }
 
-  // Guardar tokens en memoria
-  private handleAuthentication(res: AuthResponse) {
-    if (res.accessToken) {
+  // 9. Limpieza de estado
+  clearSession(): void {
+    this.accessToken.set(null);
+    this.currentUser.set(null);
+  }
+
+  // Getter para el interceptor
+  getAccessToken(): string | null {
+    return this.accessToken();
+  }
+
+  // Privado: Manejo centralizado de la respuesta exitosa de auth
+  private handleAuthentication(res: AuthResponse): void {
+    if (res.accessToken && res.user) {
       this.accessToken.set(res.accessToken);
       this.currentUser.set(res.user);
     }
   }
+}
 
-  // 7. Cerrar sesión
-  logout() {
-    this.accessToken.set(null);
-    this.currentUser.set(null);
-    
-    this.http.post(`${this.apiUrl}/logout`, {}, { withCredentials: true }).subscribe({
-      next: () => this.router.navigate(['/auth/login']),
-      error: () => this.router.navigate(['/auth/login'])
-    });
+// ==========================================
+// SERVICIO DE SUSCRIPCIONES (Client-side)
+// ==========================================
+
+@Injectable({ providedIn: 'root' })
+export class SubscriptionService {
+  private apiUrl = `${environment.apiUrl}/subscription`;
+
+  constructor(private http: HttpClient) {}
+
+  getMySubscription(): Observable<Subscription> {
+    return this.http.get<Subscription>(`${this.apiUrl}/me`, { withCredentials: true });
   }
 
-  getAccessToken(): string | null {
-    return this.accessToken();
+  getPlans(): Observable<Plan[]> {
+    return this.http.get<Plan[]>(`${this.apiUrl}/plans`, { withCredentials: true });
+  }
+
+  getRenewalHistory(): Observable<SubscriptionRenewal[]> {
+    return this.http.get<SubscriptionRenewal[]>(`${this.apiUrl}/history`, { withCredentials: true });
+  }
+
+  renewSubscription(dto: { planId: string; paymentMethodId: string; amount: number; provider: PaymentProvider }): Observable<Subscription> {
+    return this.http.post<Subscription>(`${this.apiUrl}/renew`, dto, { withCredentials: true });
+  }
+
+  cancelSubscription(): Observable<Subscription> {
+    return this.http.post<Subscription>(`${this.apiUrl}/cancel`, {}, { withCredentials: true });
+  }
+
+  // Helpers para UI
+  hasActivePremium(subscription: Subscription | undefined | null): boolean {
+    return subscription?.status === SubscriptionStatus.ACTIVE && subscription?.plan.name.startsWith('PREMIUM');
+  }
+
+  getSubscriptionStatusLabel(status: SubscriptionStatus | string): string {
+    const labels: Record<string, string> = {
+      [SubscriptionStatus.ACTIVE]: 'Activa',
+      [SubscriptionStatus.CANCELED]: 'Cancelada',
+      [SubscriptionStatus.EXPIRED]: 'Expirada',
+      [SubscriptionStatus.FAILED]: 'Pago fallido',
+      'UNKNOWN': 'Desconocido',
+    };
+    return labels[status] || status;
+  }
+
+  getPlanDisplayName(plan: Plan): string {
+    return plan.displayName || plan.name;
+  }
+
+  getDaysUntilExpiration(subscription: Subscription | null | undefined): number | null {
+    if (!subscription?.endDate) return null;
+    const end = new Date(subscription.endDate);
+    const now = new Date();
+    const diff = end.getTime() - now.getTime();
+    return Math.max(0, Math.ceil(diff / (1000 * 60 * 60 * 24)));
+  }
+
+  isInGracePeriod(subscription: Subscription | null | undefined): boolean {
+    if (!subscription?.gracePeriodEndsAt) return false;
+    return new Date(subscription.gracePeriodEndsAt) > new Date();
+  }
+}
+
+// ==========================================
+// SERVICIO DE PAGOS (Client-side)
+// ==========================================
+
+@Injectable({ providedIn: 'root' })
+export class PaymentService {
+  private apiUrl = `${environment.apiUrl}/payment`;
+
+  constructor(private http: HttpClient) {}
+
+  getPaymentMethods(): Observable<PaymentMethod[]> {
+    return this.http.get<PaymentMethod[]>(`${this.apiUrl}/methods`, { withCredentials: true });
+  }
+
+  createPaymentMethod(dto: { provider: PaymentProvider; externalEmail?: string; bankName?: string; idNumber?: string; phoneNumber?: string; isDefault?: boolean }): Observable<PaymentMethod> {
+    return this.http.post<PaymentMethod>(`${this.apiUrl}/methods`, dto, { withCredentials: true });
+  }
+
+  setDefaultPaymentMethod(id: string): Observable<PaymentMethod> {
+    return this.http.post<PaymentMethod>(`${this.apiUrl}/methods/${id}/default`, {}, { withCredentials: true });
+  }
+
+  deletePaymentMethod(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/methods/${id}`, { withCredentials: true });
+  }
+
+  processManualPayment(dto: { planId: string; paymentMethodId: string; amount: number; reference?: string }): Observable<{ success: boolean; subscription: Subscription }> {
+    return this.http.post<{ success: boolean; subscription: Subscription }>(`${this.apiUrl}/process-manual`, dto, { withCredentials: true });
+  }
+
+  verifyBinancePayment(dto: { txHash: string; expectedAmount: number; expectedAddress: string }): Observable<{ verified: boolean; transactionId?: string }> {
+    return this.http.post<{ verified: boolean; transactionId?: string }>(`${this.apiUrl}/verify/binance`, dto, { withCredentials: true });
+  }
+
+  verifyPayPalPayment(dto: { orderId: string; expectedAmount: number }): Observable<{ verified: boolean; transactionId?: string }> {
+    return this.http.post<{ verified: boolean; transactionId?: string }>(`${this.apiUrl}/verify/paypal`, dto, { withCredentials: true });
+  }
+
+  verifyMobilePayment(dto: { bankName: string; phoneNumber: string; amount: number; reference: string }): Observable<{ verified: boolean; transactionId?: string }> {
+    return this.http.post<{ verified: boolean; transactionId?: string }>(`${this.apiUrl}/verify/mobile`, dto, { withCredentials: true });
+  }
+
+  // Helpers para UI
+  getProviderDisplayName(provider: PaymentProvider): string {
+    const names: Record<PaymentProvider, string> = {
+      [PaymentProvider.BINANCE]: 'Binance (USDT/BTC)',
+      [PaymentProvider.PAYPAL]: 'PayPal',
+      [PaymentProvider.MANUAL]: 'Pago Móvil / Transferencia',
+    };
+    return names[provider] || provider;
+  }
+
+  getProviderIcon(provider: PaymentProvider): string {
+    const icons: Record<PaymentProvider, string> = {
+      [PaymentProvider.BINANCE]: 'bitcoin',
+      [PaymentProvider.PAYPAL]: 'paypal',
+      [PaymentProvider.MANUAL]: 'smartphone',
+    };
+    return icons[provider] || 'credit-card';
   }
 }
