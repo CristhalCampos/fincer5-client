@@ -1,0 +1,63 @@
+<aside
+  class="fixed lg:static inset-y-0 left-0 z-50 w-64 bg-(--surface-color) border-r border-(--switch-border) transform transition-transform duration-300 ease-in-out flex flex-col"
+  [class.translate-x-0]="isOpen()"
+  [class.-translate-x-full]="!isOpen()"
+  [class.lg:translate-x-0]="true"
+>
+  <!-- Logo y Botón Cerrar (Solo Móvil) -->
+  <div class="h-16 flex items-center px-6 border-b border-(--switch-border) shrink-0">
+    <span class="rubik-title text-2xl font-bold text-(--text-color)">
+      fincer<span class="text-(--accent-color)">5</span>
+    </span>
+    <button class="ml-auto lg:hidden p-2 rounded-lg hover:bg-(--bg-color)" (click)="closeSidebar.emit()">
+      <lucide-icon [img]="XIcon" class="w-6 h-6 text-(--text-color)"></lucide-icon>
+    </button>
+  </div>
+
+  <!-- Menú Principal de Navegación -->
+  <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
+    @for (item of menuItems; track item.path) {
+      <a
+        [routerLink]="item.path"
+        routerLinkActive="bg-(--accent-color)/10 text-(--accent-color)"
+        [routerLinkActiveOptions]="{exact: item.exact}"
+        class="flex items-center gap-3 px-4 py-3 rounded-xl text-(--text-color) opacity-70 hover:bg-(--bg-color) hover:opacity-100 transition-all font-medium"
+        (click)="closeSidebar.emit()"
+      >
+        <lucide-icon [img]="item.icon" class="w-5 h-5 shrink-0"></lucide-icon>
+        <span>{{ item.label }}</span>
+      </a>
+    }
+  </nav>
+
+  <!-- Separador Configuración -->
+  <div class="px-4 pb-4 border-t border-(--switch-border) shrink-0">
+    <nav class="space-y-1">
+      @for (item of settingsItems; track item.path) {
+        <a
+          [routerLink]="item.path"
+          routerLinkActive="bg-(--accent-color)/10 text-(--accent-color)"
+          [routerLinkActiveOptions]="{exact: item.exact}"
+          class="flex items-center gap-3 px-4 py-3 rounded-xl text-(--text-color) opacity-60 hover:bg-(--bg-color) hover:opacity-100 transition-all font-medium"
+          (click)="closeSidebar.emit()"
+        >
+          <lucide-icon [img]="item.icon" class="w-5 h-5 shrink-0"></lucide-icon>
+          <span>{{ item.label }}</span>
+        </a>
+      }
+    </nav>
+  </div>
+
+  <!-- Perfil Resumido en Sidebar (Solo Desktop) -->
+  <div class="hidden lg:block p-4 border-t border-(--switch-border) shrink-0">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-full bg-(--accent-color)/10 flex items-center justify-center text-(--accent-color) font-bold shrink-0">
+        {{ userInitial() }}
+      </div>
+      <div class="flex-1 min-w-0">
+        <p class="text-sm font-semibold text-(--text-color) truncate">{{ userName() }}</p>
+        <p class="text-xs opacity-60 text-(--text-color) truncate">{{ userEmail() }}</p>
+      </div>
+    </div>
+  </div>
+</aside>
